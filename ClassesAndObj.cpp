@@ -31,7 +31,6 @@ bool bSort(Person a, Person b)
 
 int main()
 {  
-   //Person vecPersDir; 
    string sInpName, sInpPhone;
    char chInput = '0';
    bool bEingabe = true;
@@ -59,7 +58,6 @@ int main()
             cout<<"Telefon: ";
             cin>>sInpPhone;
             vecPersDir.push_back(Person(sInpName, sInpPhone));
-            // int iTemp = 0;
             std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
             cout<<endl<<"Eingabe weiterer Daten?  j/n"<<endl;
             cin>>chTemp;
