@@ -1,0 +1,10 @@
+Alex,1234
+Bernd,5678
+Detlef,9012
+Gustav,5678
+Helmut,3456
+Harry,7890
+Karl,1234
+Rudi,9012
+Willi,3456
+Xaver,7890
