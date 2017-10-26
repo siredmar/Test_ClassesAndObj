@@ -5,6 +5,7 @@ class Person
    private:
       std::string Name;
       std::string Phone;
+      
    public:
       Person(std::string _Name, std::string _Phone);
       ~Person();
