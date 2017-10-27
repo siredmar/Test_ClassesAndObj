@@ -8,10 +8,12 @@
 #include <iostream>
 #include <fstream>
 #include "Person.h"
+#include "Address.h"
 
 using namespace std;
 
 vector<Person> vecPersDir;
+vector<address> vecAddress;
 
 bool bSort(Person a, Person b)
 {
@@ -31,10 +33,11 @@ bool bSort(Person a, Person b)
 
 int main()
 {  
-   string sInpName, sInpPhone;
+   string sInpName, sInpPhone, sInpStreet, sInpPostCode, sInpCountry = "";
    char chInput = '0';
    bool bEingabe = true;
    ofstream outputFile;
+   unsigned int iID = 0;
    do
    {
       cout<<"Auswahl: " << endl;
@@ -52,19 +55,49 @@ int main()
          char chTemp = ' ';
          do
          {
-            cout<<endl<<"Eingabe Telefonbuch"<<endl<<endl;
+            cout<<endl<<"Eingabe Name und Telefon"<<endl<<endl;
             cout<<"Name: ";
-            cin>>sInpName;
+            cin.ignore();
+            getline(cin,sInpName);
             cout<<"Telefon: ";
-            cin>>sInpPhone;
-            vecPersDir.push_back(Person(sInpName, sInpPhone));
+            cin.ignore();
+            getline(cin,sInpPhone);
+            vecPersDir.push_back(Person(sInpName, sInpPhone, iID));
             std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
+            
+            cout<<endl<<"Adresse?  j/n    ";
+            cin>>chTemp;
+            cin.clear();
+            if (chTemp != 'j')
+            {
+               bTemp = true;
+            }
+            else
+            {
+               cout<<endl<<"Strasse: ";
+               cin.ignore();
+               getline(cin, sInpStreet);
+               cin.clear();
+               cout<<endl<<"PLZ: ";
+               cin.ignore();
+               getline(cin, sInpPostCode);
+               cin.clear();
+               cout<<endl<<"Stadt/Ort: ";
+               cin.ignore();
+               getline(cin, sInpCountry);
+
+               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iID));
+            }
+            cin.clear();
             cout<<endl<<"Eingabe weiterer Daten?  j/n"<<endl;
             cin>>chTemp;
             if (chTemp != 'j')
             {
                bTemp = true;
             }
+
+            iID++;   //Counter for unique ID
+
          }while(bTemp == false);
       }
       else if(chInput == '2') //Output data
@@ -73,7 +106,15 @@ int main()
          cout<<"Eintrag:"<<endl<<endl;
          for (int i=0; i<vecPersDir.size(); i++)
          {
-            cout<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<endl;
+            iID = vecPersDir.at(i).get_ID();
+            cout<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<" ; "<<endl;
+            for (int m=0; m<vecAddress.size(); m++)
+            {
+               if(iID == vecAddress.at(m).get_ID())
+               {
+                  cout<<vecAddress.at(m).get_street()<<" , "<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl;
+               }
+            }
          }
          cout<<endl;
       }
@@ -103,16 +144,18 @@ int main()
             cout<<endl<<endl<<"Name: ";
             cin>>sInpName;
             sInpPhone = vecPersDir.at(iInput).get_Phone();
+            iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
-            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone));
+            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone, iID));
          }
          if (chPhone == 'j')
          {
             cout<<endl<<endl<<"Phone: ";
             cin>>sInpPhone;
             sInpName = vecPersDir.at(iInput).get_Name();
+            iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
-            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone));
+            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone, iID));
          }
       }
       else if(chInput == '4') //Delete data
@@ -142,6 +185,7 @@ int main()
       }
       else if(chInput == '6') //Import from txt
       {
+         iID = 0;
          string sInpData;
          int iCntName = 0;
          int iCntPhone = 0;
@@ -161,7 +205,7 @@ int main()
                {
                   iCntPhone++;
                }
-               vecPersDir.push_back(Person(sInpName, sInpPhone));
+               vecPersDir.push_back(Person(sInpName, sInpPhone, iID));
                std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
             }
             inpFile.close();
@@ -176,7 +220,7 @@ int main()
       else
       {
          cout<<endl<<"W.T.F you put into???"<<endl
-                   <<"Only 1,2,3,4 or 5!"<<endl<<endl;
+                   <<"Only 1 - 7!"<<endl<<endl;
       }
 
    }while(bEingabe == true);
