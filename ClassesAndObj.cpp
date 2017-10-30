@@ -220,10 +220,11 @@ int main()
          cout<<endl<<"Nummer: ";
          cin.clear();
          cin>>iInput;
+         iID = vecPersDir.at(iInput).get_ID();
          vecPersDir.erase(vecPersDir.begin()+iInput);
          if(vecAddress.size() != 0) //Check if is anything in the vector
          {
-            vecAddress.erase(vecAddress.begin()+iInput);
+            vecAddress.erase(vecAddress.begin()+iID);
          }
       }
       else if(chInput == '5') //Export to txt
