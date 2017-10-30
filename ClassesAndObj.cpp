@@ -38,6 +38,7 @@ int main()
    bool bEingabe = true;
    ofstream outputFile;
    unsigned int iID = 0;
+   unsigned int iCntID = 0;
    do
    {
       cout<<"Auswahl: " << endl;
@@ -46,7 +47,7 @@ int main()
       cout<<"3 = Eingabe ändern"<<endl;
       cout<<"4 = Eingabe löschen"<<endl;
       cout<<"5 = Export to txt"<<endl;
-      cout<<"6 = Import from txt - so halb..."<<endl;
+      cout<<"6 = Import from txt"<<endl;
       cout<<"7 = Ende"<<endl;
       cin>>chInput;
       if(chInput == '1')   //Input data
@@ -59,10 +60,11 @@ int main()
             cout<<"Name: ";
             cin.ignore();
             getline(cin,sInpName);
+            cin.clear();
             cout<<"Telefon: ";
-            cin.ignore();
+            cin.ignore(0);
             getline(cin,sInpPhone);
-            vecPersDir.push_back(Person(sInpName, sInpPhone, iID));
+            vecPersDir.push_back(Person(sInpName, sInpPhone, iCntID));
             std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
             
             cout<<endl<<"Adresse?  j/n    ";
@@ -79,14 +81,14 @@ int main()
                getline(cin, sInpStreet);
                cin.clear();
                cout<<endl<<"PLZ: ";
-               cin.ignore();
+               cin.ignore(0);
                getline(cin, sInpPostCode);
                cin.clear();
-               cout<<endl<<"Stadt/Ort: ";
-               cin.ignore();
+               cout<<endl<<"Stadt: ";
+               cin.ignore(0);
                getline(cin, sInpCountry);
 
-               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iID));
+               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iCntID));
             }
             cin.clear();
             cout<<endl<<"Eingabe weiterer Daten?  j/n"<<endl;
@@ -95,9 +97,7 @@ int main()
             {
                bTemp = true;
             }
-
-            iID++;   //Counter for unique ID
-
+            iCntID++;   //Counter for unique ID
          }while(bTemp == false);
       }
       else if(chInput == '2') //Output data
@@ -107,12 +107,12 @@ int main()
          for (int i=0; i<vecPersDir.size(); i++)
          {
             iID = vecPersDir.at(i).get_ID();
-            cout<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<" ; "<<endl;
+            cout<<vecPersDir.at(i).get_Name()<<endl<<"Tel.: "<<vecPersDir.at(i).get_Phone()<<endl;
             for (int m=0; m<vecAddress.size(); m++)
             {
                if(iID == vecAddress.at(m).get_ID())
                {
-                  cout<<vecAddress.at(m).get_street()<<" , "<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl;
+                  cout<<"Adresse:"<<endl<<vecAddress.at(m).get_street()<<endl<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl<<endl;
                }
             }
          }
@@ -121,13 +121,22 @@ int main()
       else if(chInput == '3') //Change data
       {
          cout<<"AUSGABE TELEFONBUCH"<<endl<<endl;
-         cout<<"Eintrag:"<<endl<<endl;
+         cout<<"Einträge:"<<endl<<endl;
          for (int i=0; i<vecPersDir.size(); i++)
          {
-            cout<<"\t"<<i<<": "<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<endl;
+            iID = vecPersDir.at(i).get_ID();
+            cout<<i<<" : "<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<endl;
+            for (int m=0; m<vecAddress.size(); m++)
+            {
+               if(iID == vecAddress.at(m).get_ID())
+               {
+                  cout<<"Adresse:"<<endl<<vecAddress.at(m).get_street()<<endl<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl<<endl;
+               }
+            }
          }
          char chName = ' ';
          char chPhone = ' ';
+         char chAddress = ' ';
          int iInput = 0;
          cout<<endl;
          cout<<"Welcher Eintrag soll geändert werden?"<<endl<<endl;
@@ -139,10 +148,14 @@ int main()
          cout<<endl<<"Telefon? j/n  =>  ";
          cin.clear();
          cin>>chPhone;
+         cout<<endl<<"Adresse ? j/n => ";
+         cin.clear();
+         cin>>chAddress;
          if (chName == 'j')
          {
             cout<<endl<<endl<<"Name: ";
-            cin>>sInpName;
+            cin.ignore();
+            getline(cin, sInpName);
             sInpPhone = vecPersDir.at(iInput).get_Phone();
             iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
@@ -151,11 +164,41 @@ int main()
          if (chPhone == 'j')
          {
             cout<<endl<<endl<<"Phone: ";
-            cin>>sInpPhone;
+            if (chName == 'j') 
+            { 
+               cin.ignore(0); 
+            }
+            else 
+            { 
+               cin.ignore(); 
+            }
+            getline(cin, sInpPhone);
             sInpName = vecPersDir.at(iInput).get_Name();
             iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
             vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone, iID));
+         }
+         if (chAddress == 'j')
+         {
+            cout<<endl<<endl<<"Strasse: ";
+            if (chName == 'j' || chPhone == 'j')
+            {
+               cin.ignore(0);
+            }
+            else
+            {
+               cin.ignore();
+            }
+            getline(cin,sInpStreet);
+            cout<<endl<<"PLZ: ";
+            cin.ignore(0);
+            getline(cin,sInpPostCode);
+            cout<<endl<<"Stadt: ";
+            cin.ignore(0);
+            getline(cin,sInpCountry);
+            iID = vecPersDir.at(iInput).get_ID();
+            vecAddress.erase(vecAddress.begin()+iInput);
+            vecAddress.insert(vecAddress.begin()+iInput, address(sInpStreet, sInpPostCode, sInpCountry, iID));
          }
       }
       else if(chInput == '4') //Delete data
