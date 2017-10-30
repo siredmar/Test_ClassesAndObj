@@ -56,6 +56,11 @@ int main()
          char chTemp = ' ';
          do
          {
+            if(vecPersDir.size() != 0) //Check if is anything in the vector
+            {
+               iCntID = vecPersDir.back().get_ID() + 1;
+               cout<<"\t Check Couter - "<<iCntID<<endl;
+            }
             cout<<endl<<"Eingabe Name und Telefon"<<endl<<endl;
             cout<<"Name: ";
             cin.ignore();
@@ -97,7 +102,7 @@ int main()
             {
                bTemp = true;
             }
-            iCntID++;   //Counter for unique ID
+            
          }while(bTemp == false);
       }
       else if(chInput == '2') //Output data
@@ -216,43 +221,75 @@ int main()
          cin.clear();
          cin>>iInput;
          vecPersDir.erase(vecPersDir.begin()+iInput);
+         if(vecAddress.size() != 0) //Check if is anything in the vector
+         {
+            vecAddress.erase(vecAddress.begin()+iInput);
+         }
       }
       else if(chInput == '5') //Export to txt
       {
          outputFile.open ("outputFile.txt");
          for(int i=0; i<vecPersDir.size(); i++)
          {
-            outputFile<<vecPersDir.at(i).get_Name()<< "," <<vecPersDir.at(i).get_Phone()<<endl;
+            iID = vecPersDir.at(i).get_ID();
+            outputFile<<vecPersDir.at(i).get_Name()<< "," <<vecPersDir.at(i).get_Phone();
+            for (int m=0; m<vecAddress.size(); m++)
+            {
+               if(iID == vecAddress.at(m).get_ID())
+               {
+                  outputFile<<"|"<<vecAddress.at(m).get_street()<<";"<<vecAddress.at(m).get_postalcode()<<"_"<<vecAddress.at(m).get_country();
+               }
+            }
+            outputFile<<endl;
          }
          outputFile.close();
       }
       else if(chInput == '6') //Import from txt
       {
-         iID = 0;
          string sInpData;
          int iCntName = 0;
          int iCntPhone = 0;
+         int iCntAddress = 0;
+         int iLenght = 0;
          ifstream inpFile ("outputFile.txt");
          if (inpFile.is_open())
          {
             while(getline(inpFile, sInpData))
             {
                std::size_t found = sInpData.find(',');
+               std::size_t found2 = sInpData.find('|');
+               std::size_t found3 = sInpData.find(';');
+               std::size_t found4 = sInpData.find('_');
                sInpName = sInpData.substr(0,found);
                if(sInpName != "")
                {
                   iCntName++;
                }
-               sInpPhone = sInpData.substr(found+1);
+               iLenght = found2 - found;
+               sInpPhone = sInpData.substr(found + 1, iLenght-1);
                if(sInpName != "")
                {
                   iCntPhone++;
                }
-               vecPersDir.push_back(Person(sInpName, sInpPhone, iID));
+               iLenght = found3 - found2;
+               sInpStreet = sInpData.substr(found2 + 1, iLenght-1);
+               iLenght = found4 - found3;
+               sInpPostCode = sInpData.substr(found3 + 1, iLenght-1);
+               sInpCountry = sInpData.substr(found4 + 1);
+               if(sInpCountry != "")
+               {
+                  iCntAddress++;
+               }
+               if(vecPersDir.size() != 0) //Check if is anything in the vector
+               {
+                  iCntID = vecPersDir.back().get_ID() + 1;
+               }
+               vecPersDir.push_back(Person(sInpName, sInpPhone, iCntID));
                std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
+               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iCntID));
             }
             inpFile.close();
-            cout<<"Es wurden "<<iCntName<<" Namen und "<<iCntPhone<<" Nummern eingetragen."<<endl;
+            cout<<"Es wurden "<<iCntName<<" Namen, "<<iCntPhone<<" Nummern "<<"und "<<iCntAddress<<" Adressen eingetragen."<<endl;
          }
          else cout<<"Datei kann nicht geöffnet werden.";
       }

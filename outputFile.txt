@@ -1,10 +1,6 @@
-Alex,1234
-Bernd,5678
-Detlef,9012
-Gustav,5678
-Helmut,3456
-Harry,7890
-Karl,1234
-Rudi,9012
-Willi,3456
-Xaver,7890
+Alex,1234|Alex Str. 1;12345_Alexland
+Bernd,0101|Bernd Weg 5;09090_Berndbach
+Chris,5678|Chris Str. 2;67890_Christown
+Detlef,6969|Detlef Str. 6;69696_Detlefburg
+Emil,13579|Emil Str. 3;08642_Emildorf
+Heinz,159260|Heinz Str. 4;13692_Heinzingen
