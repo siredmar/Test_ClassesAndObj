@@ -1,7 +1,7 @@
 #include "Address.h"
 #include <iostream>
 
-address::address(std::string _street, std::string _postalcode, std::string _country, unsigned int _iID)
+Address::Address(std::string _street, std::string _postalcode, std::string _country, unsigned int _iID)
 {
    street = _street;
    postalcode = _postalcode;
@@ -9,46 +9,37 @@ address::address(std::string _street, std::string _postalcode, std::string _coun
    ID = _iID;
 }
 
-// address::~address()
-// {
-// }
+Address::~Address()
+{
+}
 
-void address::set_street(std::string _street)
+void Address::set_street(std::string _street)
 {
    street = _street;
 }
 
-void address::set_postalcode(std::string _postalcode)
+void Address::set_postalcode(std::string _postalcode)
 {
    postalcode = _postalcode;
 }
 
-void address::set_country(std::string _country)
+void Address::set_country(std::string _country)
 {
    country = _country;
 }
 
-void address::set_ID(unsigned int _iID)
-{
-   ID = _iID;
-}
 
-std::string address::get_street()
+std::string Address::get_street()
 {
    return street;
 }
 
-std::string address::get_postalcode()
+std::string Address::get_postalcode()
 {
    return postalcode;
 }
 
-std::string address::get_country()
+std::string Address::get_country()
 {
    return country;
-}
-
-unsigned int address::get_ID()
-{
-   return ID;
 }

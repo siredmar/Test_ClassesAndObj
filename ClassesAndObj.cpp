@@ -37,8 +37,7 @@ int main()
    char chInput = '0';
    bool bEingabe = true;
    ofstream outputFile;
-   unsigned int iID = 0;
-   unsigned int iCntID = 0;
+
    do
    {
       cout<<"Auswahl: " << endl;
@@ -56,11 +55,6 @@ int main()
          char chTemp = ' ';
          do
          {
-            if(vecPersDir.size() != 0) //Check if is anything in the vector
-            {
-               iCntID = vecPersDir.back().get_ID() + 1;
-               cout<<"\t Check Couter - "<<iCntID<<endl;
-            }
             cout<<endl<<"Eingabe Name und Telefon"<<endl<<endl;
             cout<<"Name: ";
             cin.ignore();
@@ -69,7 +63,7 @@ int main()
             cout<<"Telefon: ";
             cin.ignore(0);
             getline(cin,sInpPhone);
-            vecPersDir.push_back(Person(sInpName, sInpPhone, iCntID));
+            vecPersDir.push_back(Person(sInpName, sInpPhone));
             std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
             
             cout<<endl<<"Adresse?  j/n    ";
@@ -93,7 +87,7 @@ int main()
                cin.ignore(0);
                getline(cin, sInpCountry);
 
-               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iCntID));
+               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry));
             }
             cin.clear();
             cout<<endl<<"Eingabe weiterer Daten?  j/n"<<endl;
@@ -111,15 +105,7 @@ int main()
          cout<<"Eintrag:"<<endl<<endl;
          for (int i=0; i<vecPersDir.size(); i++)
          {
-            iID = vecPersDir.at(i).get_ID();
             cout<<vecPersDir.at(i).get_Name()<<endl<<"Tel.: "<<vecPersDir.at(i).get_Phone()<<endl;
-            for (int m=0; m<vecAddress.size(); m++)
-            {
-               if(iID == vecAddress.at(m).get_ID())
-               {
-                  cout<<"Adresse:"<<endl<<vecAddress.at(m).get_street()<<endl<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl<<endl;
-               }
-            }
          }
          cout<<endl;
       }
@@ -129,15 +115,7 @@ int main()
          cout<<"Einträge:"<<endl<<endl;
          for (int i=0; i<vecPersDir.size(); i++)
          {
-            iID = vecPersDir.at(i).get_ID();
             cout<<i<<" : "<<vecPersDir.at(i).get_Name()<< "\t" <<vecPersDir.at(i).get_Phone()<<endl;
-            for (int m=0; m<vecAddress.size(); m++)
-            {
-               if(iID == vecAddress.at(m).get_ID())
-               {
-                  cout<<"Adresse:"<<endl<<vecAddress.at(m).get_street()<<endl<<vecAddress.at(m).get_postalcode()<<" "<<vecAddress.at(m).get_country()<<endl<<endl;
-               }
-            }
          }
          char chName = ' ';
          char chPhone = ' ';
@@ -162,9 +140,8 @@ int main()
             cin.ignore();
             getline(cin, sInpName);
             sInpPhone = vecPersDir.at(iInput).get_Phone();
-            iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
-            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone, iID));
+            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone));
          }
          if (chPhone == 'j')
          {
@@ -179,9 +156,8 @@ int main()
             }
             getline(cin, sInpPhone);
             sInpName = vecPersDir.at(iInput).get_Name();
-            iID = vecPersDir.at(iInput).get_ID();
             vecPersDir.erase(vecPersDir.begin()+iInput);
-            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone, iID));
+            vecPersDir.insert(vecPersDir.begin()+iInput, Person(sInpName, sInpPhone));
          }
          if (chAddress == 'j')
          {
@@ -201,9 +177,8 @@ int main()
             cout<<endl<<"Stadt: ";
             cin.ignore(0);
             getline(cin,sInpCountry);
-            iID = vecPersDir.at(iInput).get_ID();
             vecAddress.erase(vecAddress.begin()+iInput);
-            vecAddress.insert(vecAddress.begin()+iInput, address(sInpStreet, sInpPostCode, sInpCountry, iID));
+            vecAddress.insert(vecAddress.begin()+iInput, address(sInpStreet, sInpPostCode, sInpCountry));
          }
       }
       else if(chInput == '4') //Delete data
@@ -220,27 +195,14 @@ int main()
          cout<<endl<<"Nummer: ";
          cin.clear();
          cin>>iInput;
-         iID = vecPersDir.at(iInput).get_ID();
          vecPersDir.erase(vecPersDir.begin()+iInput);
-         if(vecAddress.size() != 0) //Check if is anything in the vector
-         {
-            vecAddress.erase(vecAddress.begin()+iID);
-         }
       }
       else if(chInput == '5') //Export to txt
       {
          outputFile.open ("outputFile.txt");
          for(int i=0; i<vecPersDir.size(); i++)
          {
-            iID = vecPersDir.at(i).get_ID();
             outputFile<<vecPersDir.at(i).get_Name()<< "," <<vecPersDir.at(i).get_Phone();
-            for (int m=0; m<vecAddress.size(); m++)
-            {
-               if(iID == vecAddress.at(m).get_ID())
-               {
-                  outputFile<<"|"<<vecAddress.at(m).get_street()<<";"<<vecAddress.at(m).get_postalcode()<<"_"<<vecAddress.at(m).get_country();
-               }
-            }
             outputFile<<endl;
          }
          outputFile.close();
@@ -281,13 +243,9 @@ int main()
                {
                   iCntAddress++;
                }
-               if(vecPersDir.size() != 0) //Check if is anything in the vector
-               {
-                  iCntID = vecPersDir.back().get_ID() + 1;
-               }
-               vecPersDir.push_back(Person(sInpName, sInpPhone, iCntID));
+               vecPersDir.push_back(Person(sInpName, sInpPhone));
                std::sort(vecPersDir.begin(), vecPersDir.end(), bSort);
-               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry, iCntID));
+               vecAddress.push_back(address(sInpStreet, sInpPostCode, sInpCountry));
             }
             inpFile.close();
             cout<<"Es wurden "<<iCntName<<" Namen, "<<iCntPhone<<" Nummern "<<"und "<<iCntAddress<<" Adressen eingetragen."<<endl;
