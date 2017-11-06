@@ -5,3 +5,4 @@ Dieter,6969|Dietersweg 19;12345_Dietenhofen
 Flo,12345687|Floweg 987;09876_Florida
 Heinz,159260|Heinz Str. 4;13692_Heinzingen
 Karl,0190123|Karl Str. 10;96875_Karlsbad
+Udo,091175656|Udo Gasse 50;45682_Udoberg
