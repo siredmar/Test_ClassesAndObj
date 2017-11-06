@@ -1,43 +1,43 @@
-#include "TelBuch.h"
+#include "PhoneBook.h"
 #include <iostream>
 
-TelBuch::TelBuch(std::string numPrivat, std::string numWork, std::string numMobile)
+PhoneBook::PhoneBook(std::string numPrivat, std::string numWork, std::string numMobile)
 {
    NumberPrivat = numPrivat;
    NumberWork = numWork;
    NumberMobile = numMobil;
 }
 
-TelBuch::~TelBuch()
+PhoneBook::~PhoneBook()
 {
 }
 
-void TelBuch::setNumPrivat(std::string numPrivat)
+void PhoneBook::setNumPrivat(std::string numPrivat)
 {
    NumberPrivat = numPrivat;
 }
 
-void TelBuch::setNumWork(std::string numWork)
+void PhoneBook::setNumWork(std::string numWork)
 {
    NumberWork = numWork;
 }
 
-void TelBuch::setNumMobil(std::string numMobil)
+void PhoneBook::setNumMobil(std::string numMobil)
 {
    NumberMobil = numMobil;
 }
 
-std::string TelBuch::getNumPrivat()
+std::string PhoneBook::getNumPrivat()
 {
    return NumberPrivat;
 }
 
-std::string TelBuch::getNumWork()
+std::string PhoneBook::getNumWork()
 {
    return NumberWork;
 }
 
-std::string TelBuch::getNumMobil()
+std::string PhoneBook::getNumMobil()
 {
    return NumberMobil;
 }

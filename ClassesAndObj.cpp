@@ -9,6 +9,7 @@
 #include <fstream>
 #include "Person.h"
 #include "Address.h"
+#include "PhoneBook.h"
 
 using namespace std;
 
