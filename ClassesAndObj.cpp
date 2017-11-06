@@ -35,11 +35,18 @@ bool bSort(Person a, Person b)
 
 int main()
 {  
-   string inp_name = ""; 
+   //Names for class Person
+   string inp_firstname = ""; 
+   string inp_surname = "";
+   //Names for class PhoneBook
+   string inp_phone_privat = "";
+   string inp_phone_work = "";
    string inp_phone_mobile = "";
+   //Names for class Address
    string inp_street = "";
    string inp_postcode = "";
    string inp_country = "";
+   
    char selection = '0';
    bool entry = true;
    ofstream outputFile;

@@ -1,10 +1,10 @@
 #include <string>
 
-class TelBuch
+class PhoneBook
 {
    public:
-      TelBuch(std::string numPrivat, std::string numWork, std::string numMobile);
-      ~TelBuch();
+      PhoneBook(std::string numPrivat, std::string numWork, std::string numMobile);
+      ~PhoneBook();
       void setNumPrivat(std::string numPrivat);
       void setNumWork(std::string numWork);
       void setNumMobile(std::string numMobile);
