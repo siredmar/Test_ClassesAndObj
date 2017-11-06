@@ -1,6 +1,6 @@
 Alex,1234|Alex Str. 1;12345_Alexland
 Bernd,0101|Bernd Weg 5;09090_Berndbach
 Chris,5678|Chris Str. 2;67890_Christown
-Detlef,6969|Detlef Str. 6;69696_Detlefburg
-Emil,13579|Emil Str. 3;08642_Emildorf
+Dieter,6969|Dietersweg 19;12345_Dietenhofen
+Flo,12345687|Floweg 987;09876_Florida
 Heinz,159260|Heinz Str. 4;13692_Heinzingen
