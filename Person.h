@@ -3,6 +3,7 @@
 class Person
 {
    public:
+      Person();
       Person(std::string firstname, std::string surname);
       ~Person();
       void setFirstname(std::string firstname);

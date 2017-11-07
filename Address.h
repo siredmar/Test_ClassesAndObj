@@ -3,6 +3,7 @@
 class Address
 {
    public:
+      Address();
       Address(std::string _street, std::string _postalcode, 
                   std::string _country);
       ~Address();

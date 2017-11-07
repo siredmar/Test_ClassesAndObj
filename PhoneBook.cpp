@@ -5,7 +5,7 @@ PhoneBook::PhoneBook(std::string numPrivat, std::string numWork, std::string num
 {
    NumberPrivat = numPrivat;
    NumberWork = numWork;
-   NumberMobile = numMobil;
+   NumberMobile = numMobile;
 }
 
 PhoneBook::~PhoneBook()
@@ -22,9 +22,9 @@ void PhoneBook::setNumWork(std::string numWork)
    NumberWork = numWork;
 }
 
-void PhoneBook::setNumMobil(std::string numMobil)
+void PhoneBook::setNumMobile(std::string numMobile)
 {
-   NumberMobil = numMobil;
+   NumberMobile = numMobile;
 }
 
 std::string PhoneBook::getNumPrivat()
@@ -37,7 +37,7 @@ std::string PhoneBook::getNumWork()
    return NumberWork;
 }
 
-std::string PhoneBook::getNumMobil()
+std::string PhoneBook::getNumMobile()
 {
-   return NumberMobil;
+   return NumberMobile;
 }

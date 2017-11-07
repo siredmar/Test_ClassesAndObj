@@ -1,12 +1,11 @@
 #include "Address.h"
 #include <iostream>
 
-Address::Address(std::string _street, std::string _postalcode, std::string _country, unsigned int _iID)
+Address::Address(std::string _street, std::string _postalcode, std::string _country)
 {
    street = _street;
    postalcode = _postalcode;
    country = _country;
-   ID = _iID;
 }
 
 Address::~Address()

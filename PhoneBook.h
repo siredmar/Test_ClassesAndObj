@@ -3,7 +3,9 @@
 class PhoneBook
 {
    public:
-      PhoneBook(std::string numPrivat, std::string numWork, std::string numMobile);
+      PhoneBook();
+      PhoneBook(std::string numPrivat, std::string numWork, 
+                  std::string numMobile);
       ~PhoneBook();
       void setNumPrivat(std::string numPrivat);
       void setNumWork(std::string numWork);
@@ -16,4 +18,4 @@ class PhoneBook
       std::string NumberPrivat;
       std::string NumberWork;
       std::string NumberMobile;
-}
+};

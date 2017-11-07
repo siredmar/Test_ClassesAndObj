@@ -3,11 +3,8 @@
 
 Contact::Contact()
 {
-
 }
 
 Contact::~Contact()
 {
 }
-
-void Contact::setContact(Person&, Address&, PhoneBook&)
