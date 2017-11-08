@@ -12,6 +12,6 @@ class Person
       std::string getSurname();
 
    private:
-      std::string Firstname;
-      std::string Surname;
+      std::string m_firstname;
+      std::string m_surname;
 };

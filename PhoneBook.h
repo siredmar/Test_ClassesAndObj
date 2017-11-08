@@ -4,18 +4,18 @@ class PhoneBook
 {
    public:
       PhoneBook();
-      PhoneBook(std::string numPrivat, std::string numWork, 
-                  std::string numMobile);
+      PhoneBook(std::string numprivat, std::string numwork, 
+                  std::string nummobile);
       ~PhoneBook();
-      void setNumPrivat(std::string numPrivat);
-      void setNumWork(std::string numWork);
-      void setNumMobile(std::string numMobile);
+      void setNumPrivat(std::string numprivat);
+      void setNumWork(std::string numwork);
+      void setNumMobile(std::string nummobile);
       std::string getNumPrivat();
       std::string getNumWork();
       std::string getNumMobile();
 
    private: 
-      std::string NumberPrivat;
-      std::string NumberWork;
-      std::string NumberMobile;
+      std::string m_numberprivat;
+      std::string m_numberwork;
+      std::string m_numbermobile;
 };

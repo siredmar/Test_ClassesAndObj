@@ -1,10 +1,14 @@
 #include "Person.h"
 #include <iostream>
 
+Person::Person()
+{
+}
+
 Person::Person(std::string firstname, std::string surname)
 {
-   Firstname = firstname;
-   Surname = surname;
+   m_firstname = firstname;
+   m_surname = surname;
 }
 
 Person::~Person()
@@ -13,20 +17,20 @@ Person::~Person()
 
 void Person::setFirstname(std::string firstname)
 {
-   Firstname = firstname;
+   m_firstname = firstname;
 }
 
 void Person::setSurname(std::string surname)
 {
-   Surname = surname;
+   m_surname = surname;
 }
 
 std::string Person::getFirstname()
 {
-   return Firstname;
+   return m_firstname;
 }
 
 std::string Person::getSurname()
 {
-   return Surname;
+   return m_surname;
 }

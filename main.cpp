@@ -286,16 +286,17 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-// #include "Contact.h"
+#include "Contact.h"
 // #include "Person.h"
 // #include "Address.h"
 // #include "PhoneBook.h"
 // #include "Person.cpp"
 // #include "Address.cpp"
 // #include "PhoneBook.cpp"
-#include "Contact.cpp"
+// #include "Contact.cpp"l
 
 using namespace std;
+
 
 int main()
 {
@@ -306,5 +307,21 @@ int main()
    contact.setPerson(person1);
    contact.setAddress(address1);
    contact.setPhoneBook(phonebook1);
-   // cout<<"Objekt contact: "<<contact.getPerson()<<" "<<contact.getPhoneBook()<<" "<<contact.getAddress()<<endl;
+   string vorname;
+   string nachname;
+   string adresse;
+   string telbuch;
+   
+   vorname = contact.getPerson().getFirstname();
+   nachname = contact.getPerson().getSurname();
+   address1 = contact.getAddress();
+
+   adresse = address1.get_street() + "\t" + contact.getAddress().get_postalcode() + "\t" + contact.getAddress().get_country();
+   telbuch = contact.getPhoneBook().getNumWork() + "\t" + contact.getPhoneBook().getNumPrivat() + "\t" + contact.getPhoneBook().getNumMobile();
+
+   cout<<"Vorname = "<<vorname<<endl;
+   cout<<"Nachname = "<<nachname<<endl;
+   cout<<"Adresse = "<<adresse<<endl;
+   cout<<"Tel.Buch = "<<telbuch<<endl;
+
 }
