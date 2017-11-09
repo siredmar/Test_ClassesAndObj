@@ -304,20 +304,20 @@ int main()
    Address address1("Südwestpark 92", "90449", "Nürnberg");
    PhoneBook phonebook1("0911 25 50 976","","");
    Contact contact; 
-   contact.setPerson(person1);
-   contact.setAddress(address1);
-   contact.setPhoneBook(phonebook1);
+   contact.set_person(person1);
+   contact.set_address(address1);
+   contact.set_phonebook(phonebook1);
    string vorname;
    string nachname;
    string adresse;
    string telbuch;
    
-   vorname = contact.getPerson().getFirstname();
-   nachname = contact.getPerson().getSurname();
-   address1 = contact.getAddress();
+   vorname = contact.get_person().get_firstname();
+   nachname = contact.get_person().get_surname();
+   address1 = contact.get_address();
 
-   adresse = address1.get_street() + "\t" + contact.getAddress().get_postalcode() + "\t" + contact.getAddress().get_country();
-   telbuch = contact.getPhoneBook().getNumWork() + "\t" + contact.getPhoneBook().getNumPrivat() + "\t" + contact.getPhoneBook().getNumMobile();
+   adresse = address1.get_street() + "\t" + contact.get_address().get_postalcode() + "\t" + contact.get_address().get_country();
+   telbuch = contact.get_phonebook().get_num_work() + "\t" + contact.get_phonebook().get_num_privat() + "\t" + contact.get_phonebook().get_num_mobile();
 
    cout<<"Vorname = "<<vorname<<endl;
    cout<<"Nachname = "<<nachname<<endl;

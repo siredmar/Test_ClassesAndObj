@@ -9,39 +9,39 @@ public:
    Contact();
    ~Contact();
 
-   void setPerson(const Person& person)
+   void set_person(const Person& person)
    {
-      this->person = person;
+      this->m_person = person;
    }
 
-   void setAddress(const Address& address)
+   void set_address(const Address& address)
    {
-      this->address = address;
+      this->m_address = address;
    }
    
-   void setPhoneBook(const PhoneBook& phonebook)
+   void set_phonebook(const PhoneBook& phonebook)
    {
-      this->phonebook = phonebook;
+      this->m_phonebook = phonebook;
    }
 
-   Person getPerson()
+   Person get_person()
    {
-      return person;
+      return m_person;
    }
 
-   Address getAddress()
+   Address get_address()
    {
-      return address;
+      return m_address;
    }
 
-   PhoneBook getPhoneBook()
+   PhoneBook get_phonebook()
    {
-      return phonebook;
+      return m_phonebook;
    }
 
 private:
-   PhoneBook phonebook;
-   Person person;
-   Address address;
+   PhoneBook m_phonebook;
+   Person m_person;
+   Address m_address;
 
 };

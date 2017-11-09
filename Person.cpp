@@ -15,22 +15,22 @@ Person::~Person()
 { 
 }
 
-void Person::setFirstname(std::string firstname)
+void Person::set_firstname(std::string firstname)
 {
    m_firstname = firstname;
 }
 
-void Person::setSurname(std::string surname)
+void Person::set_surname(std::string surname)
 {
    m_surname = surname;
 }
 
-std::string Person::getFirstname()
+std::string Person::get_firstname()
 {
    return m_firstname;
 }
 
-std::string Person::getSurname()
+std::string Person::get_surname()
 {
    return m_surname;
 }

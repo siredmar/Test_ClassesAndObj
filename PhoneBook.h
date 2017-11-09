@@ -7,12 +7,12 @@ class PhoneBook
       PhoneBook(std::string numprivat, std::string numwork, 
                   std::string nummobile);
       ~PhoneBook();
-      void setNumPrivat(std::string numprivat);
-      void setNumWork(std::string numwork);
-      void setNumMobile(std::string nummobile);
-      std::string getNumPrivat();
-      std::string getNumWork();
-      std::string getNumMobile();
+      void set_num_privat(std::string numprivat);
+      void set_num_work(std::string numwork);
+      void set_num_mobile(std::string nummobile);
+      std::string get_num_privat();
+      std::string get_num_work();
+      std::string get_num_mobile();
 
    private: 
       std::string m_numberprivat;

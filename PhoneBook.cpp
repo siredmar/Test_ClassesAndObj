@@ -16,32 +16,32 @@ PhoneBook::~PhoneBook()
 {
 }
 
-void PhoneBook::setNumPrivat(std::string numprivat)
+void PhoneBook::set_num_privat(std::string numprivat)
 {
    m_numberprivat = numprivat;
 }
 
-void PhoneBook::setNumWork(std::string numwork)
+void PhoneBook::set_num_work(std::string numwork)
 {
    m_numberwork = numwork;
 }
 
-void PhoneBook::setNumMobile(std::string nummobile)
+void PhoneBook::set_num_mobile(std::string nummobile)
 {
    m_numbermobile = nummobile;
 }
 
-std::string PhoneBook::getNumPrivat()
+std::string PhoneBook::get_num_privat()
 {
    return m_numberprivat;
 }
 
-std::string PhoneBook::getNumWork()
+std::string PhoneBook::get_num_work()
 {
    return m_numberwork;
 }
 
-std::string PhoneBook::getNumMobile()
+std::string PhoneBook::get_num_mobile()
 {
    return m_numbermobile;
 }

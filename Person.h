@@ -6,10 +6,10 @@ class Person
       Person();
       Person(std::string firstname, std::string surname);
       ~Person();
-      void setFirstname(std::string firstname);
-      void setSurname(std::string surname);
-      std::string getFirstname();
-      std::string getSurname();
+      void set_firstname(std::string firstname);
+      void set_surname(std::string surname);
+      std::string get_firstname();
+      std::string get_surname();
 
    private:
       std::string m_firstname;
