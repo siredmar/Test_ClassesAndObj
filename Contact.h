@@ -6,20 +6,47 @@
 class Contact
 {
 public:
-   Contact();
-   ~Contact();
+   Contact()
+   {
+   }
 
-   void set_person(const Person& person)
+   Contact(const Person &p)
+   { 
+      set_person(p);
+   }
+
+   Contact(const Address &a)
+   {
+      set_address(a);
+   }
+
+   Contact(const PhoneBook &ph)
+   { 
+      set_phonebook(ph);
+   }
+
+   Contact(const Person &p, const Address &a, const PhoneBook &ph)
+   {
+      set_person(p);
+      set_address(a);
+      set_phonebook(ph);
+   }
+
+   ~Contact()
+   {  
+   }
+
+   void set_person(const Person &person)
    {
       this->m_person = person;
    }
 
-   void set_address(const Address& address)
+   void set_address(const Address &address)
    {
       this->m_address = address;
    }
    
-   void set_phonebook(const PhoneBook& phonebook)
+   void set_phonebook(const PhoneBook &phonebook)
    {
       this->m_phonebook = phonebook;
    }
