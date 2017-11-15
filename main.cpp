@@ -5,49 +5,18 @@
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include "Contact.h"
+#include "pugixml.hpp"
+#include "ImportExport.h"
+#include "ExportToXml.h"
 
 using namespace std;
 
-bool bSort(Contact a, Contact b)
-{
-   bool sorted_return;
-   char firstletter_a = ' ';
-   char secondletter_a = ' '; 
-   char firstletter_b = ' ';
-   char secondletter_b = ' ';
-   firstletter_a = a.get_person().get_firstname().front();
-   firstletter_b = b.get_person().get_firstname().front();
-   secondletter_a = a.get_person().get_firstname().at(1);
-   secondletter_b = b.get_person().get_firstname().at(1);
+bool bSort(Contact a, Contact b);
 
-   for (unsigned int i=0; i<a.get_person().get_firstname().length(); i++)
-   {
-      if (firstletter_a <= firstletter_b)
-      {
-         sorted_return=true;
+void PrintOutDirectory(vector<Contact> cont_dir , char extension);
 
-         if (firstletter_a == firstletter_b)
-         {
-            if (secondletter_a <= secondletter_b)
-            {
-               sorted_return=true;      
-            }
-            else
-            {
-               sorted_return=false;
-            }
-         }
-      } 
-      else 
-      {
-         sorted_return=false;
-      }
-   }
-   return sorted_return; 
-}
 
 int main()
 {  
@@ -68,7 +37,8 @@ int main()
    ofstream outputFile;
 
    vector<Contact> contact_directory;
-
+   ImportExport dataExport;
+   ExportToXml xml;
    do
    {
       cout<<"Auswahl: " << endl;
@@ -76,9 +46,8 @@ int main()
       cout<<"2 = Ausgabe Daten"<<endl;
       cout<<"3 = Eingabe ändern"<<endl;
       cout<<"4 = Eingabe löschen"<<endl;
-      cout<<"5 = Export to txt"<<endl;
-      cout<<"6 = Import from txt"<<endl;
-      cout<<"7 = Ende"<<endl;
+      cout<<"5 = Import from txt"<<endl;
+      cout<<"6 = Ende"<<endl;
       cin>>selection;
       cin.clear();
       cin.ignore();
@@ -141,7 +110,9 @@ int main()
                   cin.ignore(0);
                   getline(cin, inp_country);
                }
-               contact_directory.push_back(Contact(Person(inp_firstname, inp_surname), (Address(inp_street, inp_postcode, inp_country)), PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile))), 
+               contact_directory.push_back(Contact(Person(inp_firstname, inp_surname), 
+                                                      Address(inp_street, inp_postcode, inp_country), 
+                                                            PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
                std::sort(contact_directory.begin(), contact_directory.end(), bSort);
                cin.clear();
                cout<<endl<<"Eingabe weiterer Daten?  j/n"<<endl;
@@ -153,45 +124,20 @@ int main()
                cin.clear(); 
                cin.ignore();
             }while(temp_state == false);
+            
+            //After input, write data to a .xml file
+            dataExport.set_export(&contact_directory, &xml);
+
             break;
          }
          case '2': //Output data
          {
-            cout<<endl<<" ##### AUSGABE ##### "<<endl<<endl;
-            for (int i=0; i<contact_directory.size(); i++)
-            {
-               cout<<"Vorname = "<<contact_directory.at(i).get_person().get_firstname()<<endl;
-               cout<<"Nachname = "<<contact_directory.at(i).get_person().get_surname()<<endl;
-         
-               cout<<"Adresse = "<<contact_directory.at(i).get_address().get_street() + "   " 
-                                       + contact_directory.at(i).get_address().get_postalcode() + " "
-                                                   + contact_directory.at(i).get_address().get_country()<<endl;
-
-               cout<<"Tel.Buch = "<<contact_directory.at(i).get_phonebook().get_num_work() + "   " 
-                                       + contact_directory.at(i).get_phonebook().get_num_privat() + "   " 
-                                                   + contact_directory.at(i).get_phonebook().get_num_mobile()<<endl;
-            }
+            PrintOutDirectory(contact_directory, 'n');
             break;
          }
          case '3': //Change data
          {
-            // T.B.D
-
-            cout<<endl<<" ##### AUSGABE ##### "<<endl<<endl;
-            for (int i=0; i<contact_directory.size(); i++)
-            {
-               cout<<i<<":"<<endl;
-               cout<<"Vorname = "<<contact_directory.at(i).get_person().get_firstname()<<endl;
-               cout<<"Nachname = "<<contact_directory.at(i).get_person().get_surname()<<endl;
-         
-               cout<<"Adresse = "<<contact_directory.at(i).get_address().get_street() + "   " 
-                                       + contact_directory.at(i).get_address().get_postalcode() + " "
-                                                   + contact_directory.at(i).get_address().get_country()<<endl;
-
-               cout<<"Tel.Buch = "<<contact_directory.at(i).get_phonebook().get_num_work() + "   " 
-                                       + contact_directory.at(i).get_phonebook().get_num_privat() + "   " 
-                                                   + contact_directory.at(i).get_phonebook().get_num_mobile()<<endl;
-            }
+            PrintOutDirectory(contact_directory, 'y');
             char chName = ' ';
             char chPhone = ' ';
             char firstletter_address = ' ';
@@ -202,7 +148,7 @@ int main()
             cin>>iInput;
             if (iInput != 999)   //No cancel, change data is requested
             {
-               //Einträge zwischen speichern
+               //Existing 
                inp_firstname = contact_directory.at(iInput).get_person().get_firstname();
                inp_surname = contact_directory.at(iInput).get_person().get_surname();
                inp_street = contact_directory.at(iInput).get_address().get_street();
@@ -228,9 +174,8 @@ int main()
                   getline(cin, inp_firstname);
                   cin.clear();
                   cout<<endl<<endl<<"Nachname: ";
-                  cin.ignore();
+                  cin.ignore(0);
                   getline(cin, inp_surname);
-                  // contact_directory.insert(contact_directory.begin()+iInput, Person(inp_firstname, inp_phone_mobile));
                }
                if (chPhone == 'j')
                {
@@ -250,9 +195,6 @@ int main()
 
                   cout<<endl<<endl<<"Mobile: ";
                   getline(cin, inp_phone_mobile);
-                  // inp_firstname = contact_directory.at(iInput).get_Name();
-                  // contact_directory.erase(contact_directory.begin()+iInput);
-                  // contact_directory.insert(contact_directory.begin()+iInput, Person(inp_firstname, inp_phone_mobile));
                }
                if (firstletter_address == 'j')
                {
@@ -272,97 +214,78 @@ int main()
                   cout<<endl<<"Stadt: ";
                   cin.ignore(0);
                   getline(cin,inp_country);
-                  // address_directory.erase(address_directory.begin()+iInput);
-                  // address_directory.insert(address_directory.begin()+iInput, address(inp_street, inp_postcode, inp_country));
                }
                contact_directory.erase(contact_directory.begin()+iInput);
                contact_directory.insert(contact_directory.begin()+iInput, Contact(Person(inp_firstname, inp_surname), 
                                                                                     Address(inp_street, inp_postcode, inp_country), 
                                                                                        PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
+               
+               dataExport.set_export(&contact_directory, &xml);
             }
             break;
          }
          case '4': //Delete data
          {
-            // T.B.D
+            PrintOutDirectory(contact_directory, 'y');
+            int iInput = 0;
+            cout<<endl;
+            cout<<"Welcher Eintrag soll gelöscht werden?"<<endl;
+            cout<<endl<<"Nummer: ";
+            cin.clear();
+            cin>>iInput;
+            contact_directory.erase(contact_directory.begin()+iInput);
 
-            // cout<<"AUSGABE TELEFONBUCH"<<endl<<endl;
-            // cout<<"Einträge:"<<endl<<endl;
-            // for (int i=0; i<contact_directory.size(); i++)
-            // {
-            //    cout<<i<<": "<<contact_directory.at(i).get_Name()<< "\t" <<contact_directory.at(i).get_Phone()<<endl;
-            // }
-            // int iInput = 0;
-            // cout<<endl;
-            // cout<<"Welcher Eintrag soll gelöscht werden?"<<endl;
-            // cout<<endl<<"Nummer: ";
-            // cin.clear();
-            // cin>>iInput;
-            // contact_directory.erase(contact_directory.begin()+iInput);
+            dataExport.set_export(&contact_directory, &xml);
+
             break;
          }
-         case '5': //Export to txt
+         case '5': //Import from txt
          {
-            // T.B.D
-
-            // outputFile.open ("outputFile.txt");
-            // for(int i=0; i<contact_directory.size(); i++)
+            // string inp_data;
+            // int cnt_name = 0;
+            // int cnt_phone = 0;
+            // int cnt_address = 0;
+            // int lenght = 0;
+            // ifstream inp_file ("outputFile.txt");
+            // if (inp_file.is_open())
             // {
-            //    outputFile<<contact_directory.at(i).get_Name()<< "," <<contact_directory.at(i).get_Phone();
-            //    outputFile<<endl;
-            // }
-            // outputFile.close();
-            break;
-         }
-         case '6': //Import from txt
-         {
-            // T.B.D
-
-            // string inp_Data;
-            // // int iCntName = 0;
-            // // int iCntPhone = 0;
-            // // int iCntAddress = 0;
-            // // int iLenght = 0;
-            // ifstream inpFile ("outputFile.txt");
-            // if (inpFile.is_open())
-            // {
-            //    while(getline(inpFile, inp_Data))
+            //    while(getline(inp_file, inp_data))
             //    {
-                  // std::size_t found = inp_Data.find(',');
-                  // std::size_t found2 = inp_Data.find('|');
-                  // std::size_t found3 = inp_Data.find(';');
-                  // std::size_t found4 = inp_Data.find('_');
-                  // inp_firstname = inp_Data.substr(0,found);
-                  // if(inp_firstname != "")
-                  // {
-                  //    iCntName++;
-                  // }
-                  // iLenght = found2 - found;
-                  // inp_phone_mobile = inp_Data.substr(found + 1, iLenght-1);
-                  // if(inp_firstname != "")
-                  // {
-                  //    iCntPhone++;
-                  // }
-                  // iLenght = found3 - found2;
-                  // inp_street = inp_Data.substr(found2 + 1, iLenght-1);
-                  // iLenght = found4 - found3;
-                  // inp_postcode = inp_Data.substr(found3 + 1, iLenght-1);
-                  // inp_country = inp_Data.substr(found4 + 1);
-                  // if(inp_country != "")
-                  // {
-                  //    iCntAddress++;
-                  // }
-                  // contact_directory.push_back(Person(inp_firstname, inp_phone_mobile));
-                  // std::sort(contact_directory.begin(), contact_directory.end(), bSort);
-                  // address_directory.push_back(address(inp_street, inp_postcode, inp_country));
+            //       std::size_t found = inp_data.find('-');
+            //       std::size_t found2 = inp_data.find('|');
+            //       std::size_t found3 = inp_data.find(',');
+            //       std::size_t found4 = inp_data.find('_');
+            //       inp_firstname = inp_data.substr(0,found);
+            //       if(inp_firstname != "")
+            //       {
+            //          cnt_name++;
+            //       }
+            //       lenght = found2 - found;
+            //       inp_surname = inp_data.substr(found + 1, lenght-1);
+                  
+            //       lenght = found3 - found2;
+            //       inp_street = inp_data.substr(found2 + 1, lenght-1);
+            //       lenght = found4 - found3;
+            //       inp_postcode = inp_data.substr(found3 + 1, lenght-1);
+            //       inp_country = inp_data.substr(found4 + 1);
+            //       if(inp_country != "")
+            //       {
+            //          cnt_address++;
+            //       }
+
+
+            //       contact_directory.push_back(Contact(Person(inp_firstname, inp_surname), 
+            //                                           Address(inp_street, inp_postcode, inp_country), 
+            //                                                 PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
+            //    std::sort(contact_directory.begin(), contact_directory.end(), bSort);
             //    }
-            //    inpFile.close();
-            //    cout<<"Es wurden "<<iCntName<<" Namen, "<<iCntPhone<<" Nummern "<<"und "<<iCntAddress<<" Adressen eingetragen."<<endl;
+            //    inp_file.close();
+            //    cout<<"Es wurden "<<cnt_name<<" Namen, "<<cnt_phone<<" Nummern "<<"und "<<cnt_address<<" Adressen eingetragen."<<endl;
             // }
             // else cout<<"Datei kann nicht geöffnet werden.";
             break;
          }
-         case '7': //End
+         case '6': //End
          {
             entry = false;
             break;
@@ -378,10 +301,81 @@ int main()
 }
 
 
+bool bSort(Contact a, Contact b)
+{
+   bool sorted_return;
+   char firstletter_a = ' ';
+   char secondletter_a = ' '; 
+   char firstletter_b = ' ';
+   char secondletter_b = ' ';
+   firstletter_a = a.get_person().get_firstname().front();
+   firstletter_b = b.get_person().get_firstname().front();
+   secondletter_a = a.get_person().get_firstname().at(1);
+   secondletter_b = b.get_person().get_firstname().at(1);
 
+   for (unsigned int i=0; i<a.get_person().get_firstname().length(); i++)
+   {
+      if (firstletter_a <= firstletter_b)
+      {
+         sorted_return=true;
 
+         if (firstletter_a == firstletter_b)
+         {
+            if (secondletter_a <= secondletter_b)
+            {
+               sorted_return=true;      
+            }
+            else
+            {
+               sorted_return=false;
+            }
+         }
+      } 
+      else 
+      {
+         sorted_return=false;
+      }
+   }
+   return sorted_return; 
+}
 
+void PrintOutDirectory(vector<Contact> cont_dir , char extension)
+{
+   cout<<endl<<" ##### AUSGABE ##### "<<endl<<endl;
+   if (extension == 'n')
+   {
+      for (int i=0; i<cont_dir.size(); i++)
+      {
+         cout<<"Vorname = "<<cont_dir.at(i).get_person().get_firstname()<<endl;
+         cout<<"Nachname = "<<cont_dir.at(i).get_person().get_surname()<<endl;
 
+         cout<<"Adresse = "<<cont_dir.at(i).get_address().get_street() + "   " 
+                                 + cont_dir.at(i).get_address().get_postalcode() + " "
+                                             + cont_dir.at(i).get_address().get_country()<<endl;
+
+         cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   "
+                                 + cont_dir.at(i).get_phonebook().get_num_mobile() + "   " 
+                                             + cont_dir.at(i).get_phonebook().get_num_work()<<endl;
+      }
+   }
+   if (extension == 'y')
+   {
+      for (int i=0; i<cont_dir.size(); i++)
+      {
+         cout<<i<<":"<<endl;
+         cout<<"Vorname = "<<cont_dir.at(i).get_person().get_firstname()<<endl;
+         cout<<"Nachname = "<<cont_dir.at(i).get_person().get_surname()<<endl;
+   
+         cout<<"Adresse = "<<cont_dir.at(i).get_address().get_street() + "   " 
+                                 + cont_dir.at(i).get_address().get_postalcode() + " "
+                                             + cont_dir.at(i).get_address().get_country()<<endl;
+
+         cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   " 
+                                 + cont_dir.at(i).get_phonebook().get_num_mobile() + "   " 
+                                             + cont_dir.at(i).get_phonebook().get_num_work()<<endl;
+      }
+   }
+}
 
 
 
