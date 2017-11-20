@@ -1,0 +1,19 @@
+<?xml version="2.0" encoding="UTF-8"?>
+<Contactlist>
+	<Contact>
+		<Name>
+			<Firstname>asdfg</Firstname>
+			<Surname>gfdsa</Surname>
+		</Name>
+		<Address>
+			<Strasse>2345wert</Strasse>
+			<PostalCode>wertwert</PostalCode>
+			<Country>wertwert</Country>
+		</Address>
+		<Phone>
+			<Private>21345</Private>
+			<Work>1234</Work>
+			<Mobile>12435</Mobile>
+		</Phone>
+	</Contact>
+</Contactlist>

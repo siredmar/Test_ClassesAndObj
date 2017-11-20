@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+#include <string>
 #include <stdlib.h>
 #include <algorithm>
 #include <functional>
@@ -10,6 +10,8 @@
 #include "pugixml.hpp"
 #include "ImportExport.h"
 #include "ExportToXml.h"
+#include "ExportToXmlExp.h"
+#include "ExportToCsv.h"
 
 using namespace std;
 
@@ -38,7 +40,7 @@ int main()
 
    vector<Contact> contact_directory;
    ImportExport dataExport;
-   ExportToXml xml;
+   ExportToXmlExp xml;
    do
    {
       cout<<"Auswahl: " << endl;
@@ -127,7 +129,6 @@ int main()
             
             //After input, write data to a .xml file
             dataExport.set_export(&contact_directory, &xml);
-
             break;
          }
          case '2': //Output data
@@ -180,12 +181,12 @@ int main()
                if (chPhone == 'j')
                {
                   cout<<endl<<endl<<"Arbeit: ";
-                  if (chName == 'j') 
+                  if (chName == 'j')
                   { 
                      cin.ignore(0); 
                   }
                   else 
-                  { 
+                  {
                      cin.ignore(); 
                   }
                   getline(cin, inp_phone_work);

@@ -5,10 +5,10 @@
 #include "ExportData.h"
 
 
-class ExportToXml : public ExportData
+class ExportToXmlExp : public ExportData
 {
    public:
-      ExportToXml();
-      ~ExportToXml();
+      ExportToXmlExp();
+      ~ExportToXmlExp();
        void write(const std::vector<Contact> &contact);
 };
