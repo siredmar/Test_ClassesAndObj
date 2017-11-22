@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <iostream>
 #include "pugixml.hpp"
 #include "ImportExportXmlExp.h"
 
@@ -48,7 +47,7 @@ void ImportExportXmlExp::write(std::vector<Contact> *contact)
       Phone.append_child("Mobile").append_child(pugi::node_pcdata).set_value(m_contactdir->at(i).get_phonebook().get_num_mobile().c_str());
    }
 
-   std::cout << "Saving result: " << doc.save_file("output_file.xml") << std::endl;
+   std::cout << "Saving result: " << doc.save_file("export_variant2.xml") << std::endl;
 }
 
 void ImportExportXmlExp::read(std::vector<Contact> *contact, std::string &filepath)
