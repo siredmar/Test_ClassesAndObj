@@ -2,7 +2,7 @@
 #include <string>
 #include "Contact.h"
 #include <vector>
-#include "ExportData.h"
+#include "ImportExportData.h"
 
 class ImportExport
 {
@@ -10,9 +10,9 @@ class ImportExport
       ImportExport();
       ~ImportExport();
 
-      void set_export(std::vector<Contact> *contact , ExportData *data);
+      void set_export(std::vector<Contact> *contact , ImportExportData *data);
 
-      std::string get_import();
+      void get_import(std::vector<Contact> *contact , std::string *filepath, ImportExportData *data);
 
    private:
       std::string m_outputformat;

@@ -2,18 +2,50 @@
 <Contactlist>
 	<Contact>
 		<Name>
-			<Firstname>asdfg</Firstname>
-			<Surname>gfdsa</Surname>
+			<Firstname>Harry</Firstname>
+			<Surname>Weinfort</Surname>
 		</Name>
 		<Address>
-			<Strasse>2345wert</Strasse>
-			<PostalCode>wertwert</PostalCode>
-			<Country>wertwert</Country>
+			<Street>Derpreisistheis</Street>
+			<PostalCode>10000</PostalCode>
+			<Country>Dieneunziger</Country>
 		</Address>
 		<Phone>
-			<Private>21345</Private>
-			<Work>1234</Work>
-			<Mobile>12435</Mobile>
+			<Private>100</Private>
+			<Work>500</Work>
+			<Mobile>10000</Mobile>
+		</Phone>
+	</Contact>
+	<Contact>
+		<Name>
+			<Firstname>Juergen</Firstname>
+			<Surname>Drews</Surname>
+		</Name>
+		<Address>
+			<Street>Bettim</Street>
+			<PostalCode>696969</PostalCode>
+			<Country>Kornfeld</Country>
+		</Address>
+		<Phone>
+			<Private>0929929</Private>
+			<Work>12345</Work>
+			<Mobile>67899</Mobile>
+		</Phone>
+	</Contact>
+	<Contact>
+		<Name>
+			<Firstname>Wildecker</Firstname>
+			<Surname>Herzbuben</Surname>
+		</Name>
+		<Address>
+			<Street>Schuldwar</Street>
+			<PostalCode>90000</PostalCode>
+			<Country>Derwein</Country>
+		</Address>
+		<Phone>
+			<Private>123456</Private>
+			<Work>123</Work>
+			<Mobile>456</Mobile>
 		</Phone>
 	</Contact>
 </Contactlist>

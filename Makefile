@@ -2,15 +2,15 @@ OBJ=main.cpp
 OBJ+=Address.cpp
 #OBJ+=ExportData.h
 OBJ+=Contact.cpp
-OBJ+=ExportToXml.cpp
-OBJ+=ExportToXmlExp.cpp
-OBJ+=ExportToCsv.cpp
+OBJ+=ImportExportXml.cpp
+OBJ+=ImportExportXmlExp.cpp
+OBJ+=ImportExportCsv.cpp
 OBJ+=ImportExport.cpp
 OBJ+=Person.cpp
 OBJ+=PhoneBook.cpp
 OBJ+=pugixml.cpp
 
-CXXFLAGS=-std=c++11
+CXXFLAGS=-std=c++11 -g
 
 OUTPUT=/home/alex/Workspace/RunCode
 

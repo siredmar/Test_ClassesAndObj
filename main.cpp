@@ -9,9 +9,9 @@
 #include "Contact.h"
 #include "pugixml.hpp"
 #include "ImportExport.h"
-#include "ExportToXml.h"
-#include "ExportToXmlExp.h"
-#include "ExportToCsv.h"
+#include "ImportExportXml.h"
+#include "ImportExportXmlExp.h"
+#include "ImportExportCsv.h"
 
 using namespace std;
 
@@ -40,7 +40,9 @@ int main()
 
    vector<Contact> contact_directory;
    ImportExport dataExport;
-   ExportToXmlExp xml;
+   ImportExport dataImport;
+   ImportExportXmlExp xml;
+
    do
    {
       cout<<"Auswahl: " << endl;
@@ -242,6 +244,11 @@ int main()
          }
          case '5': //Import from txt
          {
+            string filep = "output_file.xml";
+
+            dataImport.get_import(&contact_directory, &filep, &xml);
+
+            std::sort(contact_directory.begin(), contact_directory.end(), bSort);
             // string inp_data;
             // int cnt_name = 0;
             // int cnt_phone = 0;
