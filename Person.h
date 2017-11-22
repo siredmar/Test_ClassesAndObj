@@ -2,18 +2,16 @@
 
 class Person
 {
-   private:
-      std::string Name;
-      std::string Phone;
-      unsigned int ID;
-      
    public:
-      Person(std::string _Name, std::string _Phone, unsigned int _iID);
+      Person();
+      Person(std::string firstname, std::string surname);
       ~Person();
-      void set_Name(std::string _Name);
-      void set_Phone(std::string _Phone);
-      void set_ID(unsigned int _iID);
-      std::string get_Name();
-      std::string get_Phone();
-      unsigned int get_ID();
+      void set_firstname(std::string firstname);
+      void set_surname(std::string surname);
+      std::string get_firstname();
+      std::string get_surname();
+
+   private:
+      std::string m_firstname;
+      std::string m_surname;
 };

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Contactlist>
+	<Contact>
+		<Name Firstname="Hans" Surname="im Glück" />
+		<Adress Street="Duhastdie" PostalCode="20000" Country="Gansgestohlen" />
+		<Phone Private="111111" Work="222222" Mobile="333333" />
+	</Contact>
+	<Contact>
+		<Name Firstname="Matthias" Surname="Reim" />
+		<Adress Street="Schlagerallee" PostalCode="22342" Country="Vokuhila" />
+		<Phone Private="928239" Work="234982" Mobile="923843" />
+	</Contact>
+	<Contact>
+		<Name Firstname="Teletubbies" Surname="Dummfug" />
+		<Adress Street="Grüne" PostalCode="23423" Country="Hügel" />
+		<Phone Private="9999999" Work="8888888" Mobile="7777777" />
+	</Contact>
+</Contactlist>

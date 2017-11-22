@@ -1,54 +1,48 @@
 #include "Address.h"
 #include <iostream>
 
-address::address(std::string _street, std::string _postalcode, std::string _country, unsigned int _iID)
+Address::Address()
 {
-   street = _street;
-   postalcode = _postalcode;
-   country = _country;
-   ID = _iID;
 }
 
-// address::~address()
-// {
-// }
-
-void address::set_street(std::string _street)
+Address::Address(std::string street, std::string postalcode, std::string country)
 {
-   street = _street;
+   m_street = street;
+   m_postalcode = postalcode;
+   m_country = country;
 }
 
-void address::set_postalcode(std::string _postalcode)
+Address::~Address()
 {
-   postalcode = _postalcode;
 }
 
-void address::set_country(std::string _country)
+void Address::set_street(std::string street)
 {
-   country = _country;
+   m_street = street;
 }
 
-void address::set_ID(unsigned int _iID)
+void Address::set_postalcode(std::string postalcode)
 {
-   ID = _iID;
+   m_postalcode = postalcode;
 }
 
-std::string address::get_street()
+void Address::set_country(std::string country)
 {
-   return street;
+   m_country = country;
 }
 
-std::string address::get_postalcode()
+
+std::string Address::get_street()
 {
-   return postalcode;
+   return m_street;
 }
 
-std::string address::get_country()
+std::string Address::get_postalcode()
 {
-   return country;
+   return m_postalcode;
 }
 
-unsigned int address::get_ID()
+std::string Address::get_country()
 {
-   return ID;
+   return m_country;
 }

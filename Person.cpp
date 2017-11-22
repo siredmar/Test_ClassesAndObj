@@ -1,43 +1,36 @@
 #include "Person.h"
 #include <iostream>
 
-Person::Person(std::string _Name, std::string _Phone, unsigned int _iID)
+Person::Person()
 {
-   Name = _Name;
-   Phone = _Phone;
-   ID = _iID;
+}
+
+Person::Person(std::string firstname, std::string surname)
+{
+   m_firstname = firstname;
+   m_surname = surname;
 }
 
 Person::~Person()
 { 
 }
 
-void Person::set_Name(std::string _Name)
+void Person::set_firstname(std::string firstname)
 {
-   Name = _Name;
+   m_firstname = firstname;
 }
 
-void Person::set_Phone(std::string _Phone)
+void Person::set_surname(std::string surname)
 {
-   Phone = _Phone;
+   m_surname = surname;
 }
 
-void Person::set_ID(unsigned int _iID)
+std::string Person::get_firstname()
 {
-   ID = _iID;
+   return m_firstname;
 }
 
-std::string Person::get_Name()
+std::string Person::get_surname()
 {
-   return Name;
-}
-
-std::string Person::get_Phone()
-{
-   return Phone;
-}
-
-unsigned int Person::get_ID()
-{
-   return ID;
+   return m_surname;
 }
