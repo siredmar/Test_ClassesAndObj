@@ -20,7 +20,7 @@ bool bSort(Contact a, Contact b);
 void PrintOutDirectory(vector<Contact> cont_dir , char extension);
 
 
-int main()
+int main(int argc, char *argv[])
 {  
    //Names for class Person
    string inp_firstname = ""; 

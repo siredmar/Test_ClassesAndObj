@@ -1,8 +1,0 @@
-Alex,1234|Alex Str. 1;12345_Alexland
-Bernd,0101|Bernd Weg 5;09090_Berndbach
-Chris,5678|Chris Str. 2;67890_Christown
-Dieter,6969|Dietersweg 19;12345_Dietenhofen
-Flo,12345687|Floweg 987;09876_Florida
-Heinz,159260|Heinz Str. 4;13692_Heinzingen
-Karl,0190123|Karl Str. 10;96875_Karlsbad
-Udo,091175656|Udo Gasse 50;45682_Udoberg
