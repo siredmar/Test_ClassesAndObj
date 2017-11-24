@@ -70,7 +70,7 @@ void ImportExportXmlExp::read(std::vector<Contact> *contact, std::string &filepa
 
    pugi::xml_document doc;
 
-   pugi::xml_parse_result result = doc.load_file("output_file.xml");
+   pugi::xml_parse_result result = doc.load_file(m_filepath.c_str());
 
    pugi::xml_node contacts = doc.child("Contactlist");
 

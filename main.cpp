@@ -16,20 +16,34 @@
 using namespace std;
 
 bool bSort(Contact a, Contact b);
-
 void PrintOutDirectory(vector<Contact> cont_dir , char extension);
+void ExportXchange(vector<Contact> contact_dir, char xchangeformat);
+void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeformat);
 
+int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepath>
+{
+   string filepath;
+   char exchangeformat;  //1=xml1, 2=xml2, 3=csv
+   if(argc != 3)
+   {
+      cout<<"Zu wenig Argumente übergeben"<<endl;
+   }
+   else
+   {
+      exchangeformat = *argv[1];
+      cout<<"Format, wie??? "<<exchangeformat<<endl;
+      filepath = argv[2];
+      cout<<"Pfad, wo??? "<<filepath<<endl;
+   }
 
-int main(int argc, char *argv[])
-{  
    //Names for class Person
    string inp_firstname = ""; 
    string inp_surname = "";
-   //Names for class PhoneBook
+   //Values for class PhoneBook
    string inp_phone_privat = "";
    string inp_phone_work = "";
    string inp_phone_mobile = "";
-   //Names for class Address
+   //Values for class Address
    string inp_street = "";
    string inp_postcode = "";
    string inp_country = "";
@@ -41,7 +55,6 @@ int main(int argc, char *argv[])
    vector<Contact> contact_directory;
    ImportExport dataExport;
    ImportExport dataImport;
-   ImportExportXml xml;
 
    do
    {
@@ -130,7 +143,9 @@ int main(int argc, char *argv[])
             }while(temp_state == false);
             
             //After input, write data to a .xml file
-            dataExport.set_export(&contact_directory, &xml);
+            //dataExport.set_export(&contact_directory, &xml);
+            ExportXchange(contact_directory, exchangeformat);
+            
             break;
          }
          case '2': //Output data
@@ -222,8 +237,8 @@ int main(int argc, char *argv[])
                contact_directory.insert(contact_directory.begin()+iInput, Contact(Person(inp_firstname, inp_surname), 
                                                                                     Address(inp_street, inp_postcode, inp_country), 
                                                                                        PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
-               
-               dataExport.set_export(&contact_directory, &xml);
+               ExportXchange(contact_directory, exchangeformat);
+               // dataExport.set_export(&contact_directory, &xchange);
             }
             break;
          }
@@ -238,7 +253,8 @@ int main(int argc, char *argv[])
             cin>>iInput;
             contact_directory.erase(contact_directory.begin()+iInput);
 
-            dataExport.set_export(&contact_directory, &xml);
+            ExportXchange(contact_directory, exchangeformat);
+            // dataExport.set_export(&contact_directory, &xchange);
 
             break;
          }
@@ -246,8 +262,8 @@ int main(int argc, char *argv[])
          {
             string filep = "output_file.xml";
 
-            dataImport.get_import(&contact_directory, &filep, &xml);
-
+            // dataImport.get_import(&contact_directory, &filep, &xchange);
+            ImportXchange(&contact_directory, filepath, exchangeformat);
             std::sort(contact_directory.begin(), contact_directory.end(), bSort);
             
             break;
@@ -322,7 +338,7 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
 
          cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   "
                                  + cont_dir.at(i).get_phonebook().get_num_work() + "   " 
-                                            cont_dir.at(i).get_phonebook().get_num_mobile()  + <<endl;
+                                          +  cont_dir.at(i).get_phonebook().get_num_mobile()<<endl;
       }
    }
    if (extension == 'y')
@@ -340,6 +356,62 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
          cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   " 
                                  + cont_dir.at(i).get_phonebook().get_num_work() + "   " 
                                        + cont_dir.at(i).get_phonebook().get_num_mobile()<<endl;
+      }
+   }
+}
+
+void ExportXchange(vector<Contact> contact_dir, char xchangeformat)
+{
+   ImportExport dataExport;
+   ImportExport dataImport;
+
+   switch (xchangeformat)
+   {
+      case '1':
+      {
+         ImportExportXml xml;
+         dataImport.set_export(&contact_dir, &xml);
+         break;
+      }
+      case '2':
+      {
+         ImportExportXmlExp xmlexp;
+         dataImport.set_export(&contact_dir, &xmlexp);
+         break;
+      }
+      case '3':
+      {
+         ImportExportCsv csv;
+         dataImport.set_export(&contact_dir, &csv);
+         break;
+      }
+   }
+}
+
+void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeformat)
+{
+   ImportExport dataExport;
+   ImportExport dataImport;
+
+   switch (xchangeformat)
+   {
+      case '1':
+      {
+         ImportExportXml format;
+         dataImport.get_import(contact_dir, &fpath, &format);
+         break;
+      }
+      case '2':
+      {
+         ImportExportXmlExp format;
+         dataImport.get_import(contact_dir, &fpath, &format);
+         break;
+      }
+      case '3':
+      {
+         ImportExportCsv format;
+         dataImport.get_import(contact_dir, &fpath, &format);  
+         break;
       }
    }
 }
