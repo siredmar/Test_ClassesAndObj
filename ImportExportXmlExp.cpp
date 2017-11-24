@@ -76,12 +76,12 @@ void ImportExportXmlExp::read(std::vector<Contact> *contact, std::string &filepa
 
    std::cout<<contacts.name()<<std::endl;
 
-   for(pugi::xml_node contactnode = contacts.first_child(); contactnode; contactnode = contactnode.next_sibling())   //Find each <Contact>
+   for (pugi::xml_node contactnode = contacts.first_child(); contactnode; contactnode = contactnode.next_sibling())   //Find each <Contact>
    {
       std::cout<<"New "<<contactnode.name()<<std::endl;
-      for(pugi::xml_node contactattr = contactnode.first_child(); contactattr; contactattr = contactattr.next_sibling()) //Should find Name, Address, Phone
+      for (pugi::xml_node contactattr = contactnode.first_child(); contactattr; contactattr = contactattr.next_sibling()) //Should find Name, Address, Phone
       {
-         for(pugi::xml_node childattr = contactattr.first_child(); childattr; childattr = childattr.next_sibling())  //Should find each value of each child
+         for (pugi::xml_node childattr = contactattr.first_child(); childattr; childattr = childattr.next_sibling())  //Should find each value of each child
          {
             std::cout<<childattr.name()<<" = "<<childattr.child_value()<<std::endl;
 
