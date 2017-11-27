@@ -11,4 +11,5 @@ class ImportExportCsv : public ImportExportData
       ImportExportCsv();
       ~ImportExportCsv();
        void write(std::vector<Contact> *contact);
+       void read(std::vector<Contact> *contact, std::string &filepath);
 };
