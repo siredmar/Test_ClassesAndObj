@@ -67,61 +67,20 @@ void ImportExportCsv::read(std::vector<Contact> *contact, std::string &filepath)
          tokenizer tok {line, sep};
          int cnt = 0;
          
+         std::string *elements[8];
+         elements[0] = &m_firstname;
+         elements[1] = &m_surname;
+         elements[2] = &m_street;
+         elements[3] = &m_postcode;
+         elements[4] = &m_country;
+         elements[5] = &m_phone_private;
+         elements[6] = &m_phone_work;
+         elements[7] = &m_phone_mobile;
+
          for (const auto &strelement : tok)
          {
             std::cout<<strelement<<std::endl;
-            switch (cnt)
-            {
-               case 0:
-               {
-                  m_firstname = strelement;
-                  std::cout<<"Vorname : "<<m_firstname<<std::endl;
-                  break;
-               }
-               case 1:
-               {
-                  m_surname = strelement;
-                  std::cout<<"Nachname : "<<m_surname<<std::endl;
-                  break;
-               }
-               case 2:
-               {
-                  m_street = strelement;
-                  std::cout<<"Strasse : "<<m_street<<std::endl;
-                  break;
-               }
-               case 3:
-               {
-                  m_postcode = strelement;
-                  std::cout<<"PLZ : "<<m_postcode<<std::endl;
-                  break;
-               }
-               case 4:
-               {
-                  m_country = strelement;
-                  std::cout<<"Stadt : "<<m_country<<std::endl;
-                  break;
-               }
-               case 5:
-               {
-                  m_phone_private = strelement;
-                  std::cout<<"Ph - priv : "<<m_phone_private<<std::endl;
-                  break;
-               }
-               case 6:
-               {
-                  m_phone_work = strelement;
-                  std::cout<<"Ph - work : "<<m_phone_work<<std::endl;
-                  break;
-               }
-               case 7:
-               {
-                  m_phone_mobile = strelement;
-                  std::cout<<"Ph - mob : "<<m_phone_mobile<<std::endl;
-                  break;
-               }
-            }
-            cnt++;
+            *elements[cnt++] = strelement;
          }
        
          if ( emptyline == false )
@@ -130,7 +89,6 @@ void ImportExportCsv::read(std::vector<Contact> *contact, std::string &filepath)
                                        Address(m_street, m_postcode, m_country), 
                                              PhoneBook(m_phone_private, m_phone_work, m_phone_mobile)));
          }
-
       }
    }
 }
