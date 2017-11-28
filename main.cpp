@@ -6,6 +6,18 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <boost/program_options/cmdline.hpp>
+#include <boost/program_options/config.hpp>
+#include <boost/program_options/environment_iterator.hpp>
+#include <boost/program_options/eof_iterator.hpp>
+#include <boost/program_options/errors.hpp>
+#include <boost/program_options/option.hpp>
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/positional_options.hpp>
+#include <boost/program_options/value_semantic.hpp>
+#include <boost/program_options/variables_map.hpp>
+#include <boost/program_options/version.hpp>
 #include "Contact.h"
 #include "pugixml.hpp"
 #include "ImportExport.h"
@@ -14,27 +26,20 @@
 #include "ImportExportCsv.h"
 
 using namespace std;
+namespace po = boost::program_options;
 
 bool bSort(Contact a, Contact b);
 void PrintOutDirectory(vector<Contact> cont_dir , char extension);
 void ExportXchange(vector<Contact> contact_dir, char xchangeformat);
 void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeformat);
+void ArgumentParser(int argcount, char *argvalue[]);
 
 int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepath>
 {
    string filepath;
    char exchangeformat;  //1=xml1, 2=xml2, 3=csv
-   if(argc != 3)
-   {
-      cout<<"Zu wenig Argumente übergeben"<<endl;
-   }
-   else
-   {
-      exchangeformat = *argv[1];
-      cout<<"Format, wie??? "<<exchangeformat<<endl;
-      filepath = argv[2];
-      cout<<"Pfad, wo??? "<<filepath<<endl;
-   }
+   
+   ArgumentParser(argc, argv);
 
    //Names for class Person
    string inp_firstname = ""; 
@@ -327,35 +332,36 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
    cout<<endl<<" ##### AUSGABE ##### "<<endl<<endl;
    if (extension == 'n')
    {
-      for (int i=0; i<cont_dir.size(); i++)
+      for(auto element : cont_dir)  //OLDSCHOOL -> for (int i=0; i<cont_dir.size(); i++)
       {
-         cout<<"Vorname = "<<cont_dir.at(i).get_person().get_firstname()<<endl;
-         cout<<"Nachname = "<<cont_dir.at(i).get_person().get_surname()<<endl;
+         cout<<"Vorname = "<<element.get_person().get_firstname()<<endl;
+         cout<<"Nachname = "<<element.get_person().get_surname()<<endl;
 
-         cout<<"Adresse = "<<cont_dir.at(i).get_address().get_street() + "   " 
-                                 + cont_dir.at(i).get_address().get_postalcode() + " "
-                                             + cont_dir.at(i).get_address().get_country()<<endl;
+         cout<<"Adresse = "<<element.get_address().get_street() + "   " 
+                                 + element.get_address().get_postalcode() + " "
+                                             + element.get_address().get_country()<<endl;
 
-         cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   "
-                                 + cont_dir.at(i).get_phonebook().get_num_work() + "   " 
-                                          +  cont_dir.at(i).get_phonebook().get_num_mobile()<<endl;
+         cout<<"Tel.Buch = "<<element.get_phonebook().get_num_privat() + "   "
+                                 + element.get_phonebook().get_num_work() + "   " 
+                                          +  element.get_phonebook().get_num_mobile()<<endl;
       }
    }
    if (extension == 'y')
    {
-      for (int i=0; i<cont_dir.size(); i++)
+      int number = 0;
+      for(auto element : cont_dir)  //OLDSCHOOL -> for (int i=0; i<cont_dir.size(); i++)
       {
-         cout<<i<<":"<<endl;
-         cout<<"Vorname = "<<cont_dir.at(i).get_person().get_firstname()<<endl;
-         cout<<"Nachname = "<<cont_dir.at(i).get_person().get_surname()<<endl;
+         cout<< number++ << ":" << endl;
+         cout<<"Vorname = "<<element.get_person().get_firstname()<<endl;
+         cout<<"Nachname = "<<element.get_person().get_surname()<<endl;
    
-         cout<<"Adresse = "<<cont_dir.at(i).get_address().get_street() + "   " 
-                                 + cont_dir.at(i).get_address().get_postalcode() + " "
-                                       + cont_dir.at(i).get_address().get_country()<<endl;
+         cout<<"Adresse = "<<element.get_address().get_street() + "   " 
+                                 + element.get_address().get_postalcode() + " "
+                                       + element.get_address().get_country()<<endl;
 
-         cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   " 
-                                 + cont_dir.at(i).get_phonebook().get_num_work() + "   " 
-                                       + cont_dir.at(i).get_phonebook().get_num_mobile()<<endl;
+         cout<<"Tel.Buch = "<<element.get_phonebook().get_num_privat() + "   " 
+                                 + element.get_phonebook().get_num_work() + "   " 
+                                       + element.get_phonebook().get_num_mobile()<<endl;
       }
    }
 }
@@ -412,6 +418,52 @@ void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeforma
          ImportExportCsv format;
          dataImport.get_import(contact_dir, &fpath, &format);  
          break;
+      }
+   }
+}
+
+void ArgumentParser (int argcount, char *argvalue[])
+{
+   char expformat = ' ';
+   po::options_description desc("Allowed options");
+   desc.add_options()
+      ("help,h", "Dies ist ein Shit-Fucking Kontaktbuch.\n\n"
+               "Damit kann man schubberdoll Namen, Adressen und Telefonnummern eintragen und in einem von drei Exportformaten exportieren.\n"
+               "Ebenso kann es giga-galaktisch die exportierten Daten, importieren. Toll nicht?! \n\n\n"
+               "Folgende Argumente können optional übergeben werden: [-o, --output] [-i, --input] \n\n\n"
+               "-o, --output   :   1 = xml, 2 = xml expression, 3 = csv\n\n"
+               "-i, --input    :   Pfadangabe jeder einzelnen Datei. Jede Dateiangabe muss mit -i oder --input beginnen; z.B. ~/Workspace/ExchangeData")
+      ("input,i", po::value<vector<string>>(), "input data or path")
+      ("output,o", po::value<char>(&expformat)-> default_value('1'), "output format");
+      
+   po::variables_map vm;
+   po::store(po::parse_command_line(argcount, argvalue, desc),vm);
+   po::notify(vm);
+   // po::parsed_options()
+   if (vm.count("help"))
+   {
+      cout<<desc<<endl;
+      exit(-1);
+   }
+
+   if(argcount > 1)
+   {
+      if (vm.count("input"))
+      {
+         // for(int i = 0; i < vm["input"].as< vector<string> >().size(); i++)   OLDSCHOOL!!!
+         // {
+         //  cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(i)<<endl;   
+         // }
+         for (auto strelement : vm["input"].as< vector<string> >())
+         {
+            cout<<"Schleife ala C++11 => "<<strelement<<endl;
+         }
+         //cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(0)<<endl;
+      }
+
+      if (vm.count("output"))
+      {
+            cout<<"Output => "<<expformat<<endl;
       }
    }
 }

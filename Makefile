@@ -11,8 +11,8 @@ OBJ+=PhoneBook.cpp
 OBJ+=pugixml.cpp
 
 CXXFLAGS=-std=c++11 -g
-
+LIBS = -lboost_program_options
 OUTPUT=/home/alex/Workspace/RunCode
 
 all:
-	g++ $(CXXFLAGS) $(OBJ) -o $(OUTPUT)
+	g++ $(CXXFLAGS) $(OBJ) $(LIBS) -o $(OUTPUT)
