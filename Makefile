@@ -11,7 +11,7 @@ OBJ+=PhoneBook.cpp
 OBJ+=pugixml.cpp
 OBJ+=ExportFactory.cpp
 
-CXXFLAGS=-std=c++14 -g
+CXXFLAGS=-std=c++11 -g
 LIBS = -lboost_program_options
 OUTPUT=RunCode
 

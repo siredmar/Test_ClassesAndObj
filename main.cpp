@@ -434,11 +434,11 @@ void ArgumentParser (int argcount, char *argvalue[], vector<Contact> *contact_di
          // {
          //  cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(i)<<endl;
          // }
+         int cnt = 0;
          for (auto strelement : vm["input"].as< vector<string> >())
          {
-            cout<<"Schleife ala C++11 => "<<strelement<<endl;
+            ImportXchange(contact_dir, vm["input"].as< vector<string> >().at(cnt++));
          }
-         ImportXchange(contact_dir, vm["input"].as< vector<string> >().at(0));
          //cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(0)<<endl;
       }
 
