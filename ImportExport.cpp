@@ -13,7 +13,7 @@ ImportExport::~ImportExport()
 }
 
 void ImportExport::set_export(std::vector<Contact> *contact, ImportExportData *data)
-{ 
+{
    // m_outputformat = xchangeformat;  //XML1 = XML Variante 1, XML2 = XML Variante 2, CSV
    data->write(contact);
 }

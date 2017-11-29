@@ -12,4 +12,7 @@ class ImportExportCsv : public ImportExportData
       ~ImportExportCsv();
        void write(std::vector<Contact> *contact);
        void read(std::vector<Contact> *contact, std::string &filepath);
+
 };
+
+bool check_filetype(std::string filepath);

@@ -8,7 +8,6 @@ class ImportExportData
       virtual void write(std::vector<Contact> *contact){}; // = 0;
 
       virtual void read(std::vector<Contact> *contact, std::string &filepath){};
-
       std::vector<Contact> *m_contactdir;
 
       std::string m_filepath;
@@ -20,7 +19,7 @@ class ImportExportData
       std::string m_country;
       std::string m_phone_private;
       std::string m_phone_work;
-      std::string m_phone_mobile;      
+      std::string m_phone_mobile;
 
    private:
 };

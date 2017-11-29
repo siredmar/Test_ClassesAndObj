@@ -24,6 +24,7 @@
 #include "ImportExportXml.h"
 #include "ImportExportXmlExp.h"
 #include "ImportExportCsv.h"
+#include "ExportFactory.h"
 
 using namespace std;
 namespace po = boost::program_options;
@@ -31,18 +32,18 @@ namespace po = boost::program_options;
 bool bSort(Contact a, Contact b);
 void PrintOutDirectory(vector<Contact> cont_dir , char extension);
 void ExportXchange(vector<Contact> contact_dir, char xchangeformat);
-void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeformat);
-void ArgumentParser(int argcount, char *argvalue[]);
+void ImportXchange(vector<Contact> *contact_dir, string fpath);
+void ArgumentParser (int argcount, char *argvalue[], vector<Contact> *contact_dir);
 
 int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepath>
 {
    string filepath;
    char exchangeformat;  //1=xml1, 2=xml2, 3=csv
-   
-   ArgumentParser(argc, argv);
+   vector<Contact> contact_directory;
+   ArgumentParser(argc, argv, &contact_directory);
 
    //Names for class Person
-   string inp_firstname = ""; 
+   string inp_firstname = "";
    string inp_surname = "";
    //Values for class PhoneBook
    string inp_phone_privat = "";
@@ -52,12 +53,12 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
    string inp_street = "";
    string inp_postcode = "";
    string inp_country = "";
-   
+
    char selection = '0';
    bool entry = true;
    ofstream outputFile;
 
-   vector<Contact> contact_directory;
+   
    ImportExport dataExport;
    ImportExport dataImport;
 
@@ -110,7 +111,7 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
                   cin.ignore(0);
                   getline(cin, inp_phone_mobile);
                }
-               
+
                cout<<endl<<"Adresse?  j/n    ";
                cin>>temp_select;
                cin.clear();
@@ -132,8 +133,8 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
                   cin.ignore(0);
                   getline(cin, inp_country);
                }
-               contact_directory.push_back(Contact(Person(inp_firstname, inp_surname), 
-                                                      Address(inp_street, inp_postcode, inp_country), 
+               contact_directory.push_back(Contact(Person(inp_firstname, inp_surname),
+                                                      Address(inp_street, inp_postcode, inp_country),
                                                             PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
                std::sort(contact_directory.begin(), contact_directory.end(), bSort);
                cin.clear();
@@ -143,14 +144,14 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
                {
                   temp_state = true;
                }
-               cin.clear(); 
+               cin.clear();
                cin.ignore();
             }while(temp_state == false);
-            
+
             //After input, write data to a .xml file
             //dataExport.set_export(&contact_directory, &xml);
             ExportXchange(contact_directory, exchangeformat);
-            
+
             break;
          }
          case '2': //Output data
@@ -171,7 +172,7 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
             cin>>iInput;
             if (iInput != 999)   //No cancel, change data is requested
             {
-               //Existing 
+               //Existing
                inp_firstname = contact_directory.at(iInput).get_person().get_firstname();
                inp_surname = contact_directory.at(iInput).get_person().get_surname();
                inp_street = contact_directory.at(iInput).get_address().get_street();
@@ -204,12 +205,12 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
                {
                   cout<<endl<<endl<<"Arbeit: ";
                   if (chName == 'j')
-                  { 
-                     cin.ignore(0); 
-                  }
-                  else 
                   {
-                     cin.ignore(); 
+                     cin.ignore(0);
+                  }
+                  else
+                  {
+                     cin.ignore();
                   }
                   getline(cin, inp_phone_work);
 
@@ -239,8 +240,8 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
                   getline(cin,inp_country);
                }
                contact_directory.erase(contact_directory.begin()+iInput);
-               contact_directory.insert(contact_directory.begin()+iInput, Contact(Person(inp_firstname, inp_surname), 
-                                                                                    Address(inp_street, inp_postcode, inp_country), 
+               contact_directory.insert(contact_directory.begin()+iInput, Contact(Person(inp_firstname, inp_surname),
+                                                                                    Address(inp_street, inp_postcode, inp_country),
                                                                                        PhoneBook(inp_phone_privat, inp_phone_work, inp_phone_mobile)));
                ExportXchange(contact_directory, exchangeformat);
                // dataExport.set_export(&contact_directory, &xchange);
@@ -268,9 +269,9 @@ int main(int argc, char *argv[]) //Order of arguments: <exchangeformat> <filepat
             string filep = "output_file.xml";
 
             // dataImport.get_import(&contact_directory, &filep, &xchange);
-            ImportXchange(&contact_directory, filepath, exchangeformat);
+            ImportXchange(&contact_directory, filep);
             std::sort(contact_directory.begin(), contact_directory.end(), bSort);
-            
+
             break;
          }
          case '6': //End
@@ -293,7 +294,7 @@ bool bSort(Contact a, Contact b)
 {
    bool sorted_return;
    char firstletter_a = ' ';
-   char secondletter_a = ' '; 
+   char secondletter_a = ' ';
    char firstletter_b = ' ';
    char secondletter_b = ' ';
    firstletter_a = a.get_person().get_firstname().front();
@@ -311,20 +312,20 @@ bool bSort(Contact a, Contact b)
          {
             if (secondletter_a <= secondletter_b)
             {
-               sorted_return=true;      
+               sorted_return=true;
             }
             else
             {
                sorted_return=false;
             }
          }
-      } 
-      else 
+      }
+      else
       {
          sorted_return=false;
       }
    }
-   return sorted_return; 
+   return sorted_return;
 }
 
 void PrintOutDirectory(vector<Contact> cont_dir , char extension)
@@ -337,12 +338,12 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
          cout<<"Vorname = "<<element.get_person().get_firstname()<<endl;
          cout<<"Nachname = "<<element.get_person().get_surname()<<endl;
 
-         cout<<"Adresse = "<<element.get_address().get_street() + "   " 
+         cout<<"Adresse = "<<element.get_address().get_street() + "   "
                                  + element.get_address().get_postalcode() + " "
                                              + element.get_address().get_country()<<endl;
 
          cout<<"Tel.Buch = "<<element.get_phonebook().get_num_privat() + "   "
-                                 + element.get_phonebook().get_num_work() + "   " 
+                                 + element.get_phonebook().get_num_work() + "   "
                                           +  element.get_phonebook().get_num_mobile()<<endl;
       }
    }
@@ -354,13 +355,13 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
          cout<< number++ << ":" << endl;
          cout<<"Vorname = "<<element.get_person().get_firstname()<<endl;
          cout<<"Nachname = "<<element.get_person().get_surname()<<endl;
-   
-         cout<<"Adresse = "<<element.get_address().get_street() + "   " 
+
+         cout<<"Adresse = "<<element.get_address().get_street() + "   "
                                  + element.get_address().get_postalcode() + " "
                                        + element.get_address().get_country()<<endl;
 
-         cout<<"Tel.Buch = "<<element.get_phonebook().get_num_privat() + "   " 
-                                 + element.get_phonebook().get_num_work() + "   " 
+         cout<<"Tel.Buch = "<<element.get_phonebook().get_num_privat() + "   "
+                                 + element.get_phonebook().get_num_work() + "   "
                                        + element.get_phonebook().get_num_mobile()<<endl;
       }
    }
@@ -394,35 +395,14 @@ void ExportXchange(vector<Contact> contact_dir, char xchangeformat)
    }
 }
 
-void ImportXchange(vector<Contact> *contact_dir, string fpath, char xchangeformat)
+void ImportXchange(vector<Contact> *contact_dir, string fpath)
 {
-   ImportExport dataExport;
    ImportExport dataImport;
-
-   switch (xchangeformat)
-   {
-      case '1':
-      {
-         ImportExportXml format;
-         dataImport.get_import(contact_dir, &fpath, &format);
-         break;
-      }
-      case '2':
-      {
-         ImportExportXmlExp format;
-         dataImport.get_import(contact_dir, &fpath, &format);
-         break;
-      }
-      case '3':
-      {
-         ImportExportCsv format;
-         dataImport.get_import(contact_dir, &fpath, &format);  
-         break;
-      }
-   }
+   ExportFactory factory;
+   dataImport.get_import(contact_dir, &fpath, factory.GenerateImportExportObject(fpath));
 }
 
-void ArgumentParser (int argcount, char *argvalue[])
+void ArgumentParser (int argcount, char *argvalue[], vector<Contact> *contact_dir)
 {
    char expformat = ' ';
    po::options_description desc("Allowed options");
@@ -435,7 +415,7 @@ void ArgumentParser (int argcount, char *argvalue[])
                "-i, --input    :   Pfadangabe jeder einzelnen Datei. Jede Dateiangabe muss mit -i oder --input beginnen; z.B. ~/Workspace/ExchangeData")
       ("input,i", po::value<vector<string>>(), "input data or path")
       ("output,o", po::value<char>(&expformat)-> default_value('1'), "output format");
-      
+
    po::variables_map vm;
    po::store(po::parse_command_line(argcount, argvalue, desc),vm);
    po::notify(vm);
@@ -452,12 +432,13 @@ void ArgumentParser (int argcount, char *argvalue[])
       {
          // for(int i = 0; i < vm["input"].as< vector<string> >().size(); i++)   OLDSCHOOL!!!
          // {
-         //  cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(i)<<endl;   
+         //  cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(i)<<endl;
          // }
          for (auto strelement : vm["input"].as< vector<string> >())
          {
             cout<<"Schleife ala C++11 => "<<strelement<<endl;
          }
+         ImportXchange(contact_dir, vm["input"].as< vector<string> >().at(0));
          //cout<<"Ja wo ist es denn??? " << vm["input"].as< vector<string> >().at(0)<<endl;
       }
 

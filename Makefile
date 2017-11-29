@@ -9,10 +9,11 @@ OBJ+=ImportExport.cpp
 OBJ+=Person.cpp
 OBJ+=PhoneBook.cpp
 OBJ+=pugixml.cpp
+OBJ+=ExportFactory.cpp
 
-CXXFLAGS=-std=c++11 -g
+CXXFLAGS=-std=c++14 -g
 LIBS = -lboost_program_options
-OUTPUT=/home/alex/Workspace/RunCode
+OUTPUT=RunCode
 
 all:
 	g++ $(CXXFLAGS) $(OBJ) $(LIBS) -o $(OUTPUT)

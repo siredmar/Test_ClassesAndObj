@@ -25,7 +25,7 @@ void ImportExportXml::write(std::vector<Contact> *contact)
    declaration.append_attribute("encoding") = "UTF-8";
 
    auto root = doc.append_child("Contactlist");
-   
+
    //Variante 1
    for(int i = 0; i < m_contactdir->size(); i++)
    {
@@ -42,7 +42,7 @@ void ImportExportXml::write(std::vector<Contact> *contact)
       nodeChild = nodeparent.append_child("Phone");
       nodeChild.append_attribute("Private") = m_contactdir->at(i).get_phonebook().get_num_privat().c_str();
       nodeChild.append_attribute("Work") = m_contactdir->at(i).get_phonebook().get_num_work().c_str();
-      nodeChild.append_attribute("Mobile") = m_contactdir->at(i).get_phonebook().get_num_mobile().c_str();   
+      nodeChild.append_attribute("Mobile") = m_contactdir->at(i).get_phonebook().get_num_mobile().c_str();
    }
    std::cout << "Saving result: " << doc.save_file("export_variant1.xml") << std::endl;
 }
@@ -116,9 +116,30 @@ void ImportExportXml::read(std::vector<Contact> *contact, std::string &filepath)
          }
       }
 
-      m_contactdir->push_back(Contact(Person(m_firstname, m_surname), 
-                                          Address(m_street, m_postcode, m_country), 
+      m_contactdir->push_back(Contact(Person(m_firstname, m_surname),
+                                          Address(m_street, m_postcode, m_country),
                                                 PhoneBook(m_phone_private, m_phone_work, m_phone_mobile)));
 
    }
+}
+
+bool check_filetype_xml(std::string filepath)
+{
+    std::ifstream xmlfile (filepath);
+    std::string firstline;
+    if (xmlfile.is_open())
+    {
+       getline(xmlfile, firstline);
+       xmlfile.close();
+       std::size_t found = firstline.find('"');
+       firstline = firstline.substr(found+1, 3);
+       if (firstline != "1.0")
+       {
+          return false;
+       }
+       else
+       {
+           return true;
+       }
+    }
 }

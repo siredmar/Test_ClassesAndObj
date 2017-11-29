@@ -119,9 +119,30 @@ void ImportExportXmlExp::read(std::vector<Contact> *contact, std::string &filepa
             }
          }
       }
-      
-      m_contactdir->push_back(Contact(Person(m_firstname, m_surname), 
-                                          Address(m_street, m_postcode, m_country), 
+
+      m_contactdir->push_back(Contact(Person(m_firstname, m_surname),
+                                          Address(m_street, m_postcode, m_country),
                                                 PhoneBook(m_phone_private, m_phone_work, m_phone_mobile)));
    }
+}
+
+bool check_filetype_xmlexp(std::string filepath)
+{
+    std::ifstream xmlfile (filepath);
+    std::string firstline;
+    if (xmlfile.is_open())
+    {
+       getline(xmlfile, firstline);
+       xmlfile.close();
+       std::size_t found = firstline.find('"');
+       firstline = firstline.substr(found+1, 3);
+       if (firstline != "2.0")
+       {
+          return false;
+       }
+       else
+       {
+           return true;
+       }
+    }
 }

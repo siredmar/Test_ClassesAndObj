@@ -28,7 +28,7 @@ void ImportExportCsv::write(std::vector<Contact> *contact)
       csvfile<<"Firstname"<<seperator<<"Surname"<<seperator<<"Street"<<seperator<<"PostalCode"<<seperator<<"Country"<<seperator<<"Phone_Private"<<seperator<<"Phone_Work"<<seperator<<"Phone_Mobile"<<std::endl;
       for (int i = 0; i < m_contactdir->size(); i++)
       {
-         csvfile<<m_contactdir->at(i).get_person().get_firstname() + seperator + m_contactdir->at(i).get_person().get_surname() + seperator + 
+         csvfile<<m_contactdir->at(i).get_person().get_firstname() + seperator + m_contactdir->at(i).get_person().get_surname() + seperator +
                      m_contactdir->at(i).get_address().get_street() + seperator + m_contactdir->at(i).get_address().get_postalcode() + seperator + m_contactdir->at(i).get_address().get_country()+ seperator +
                         m_contactdir->at(i).get_phonebook().get_num_privat() + seperator + m_contactdir->at(i).get_phonebook().get_num_work() + seperator +  m_contactdir->at(i).get_phonebook().get_num_mobile()<<std::endl;
       }
@@ -66,7 +66,7 @@ void ImportExportCsv::read(std::vector<Contact> *contact, std::string &filepath)
          boost::char_separator<char> sep{"|"};
          tokenizer tok {line, sep};
          int cnt = 0;
-         
+
          std::string *elements[8];
          elements[0] = &m_firstname;
          elements[1] = &m_surname;
@@ -82,13 +82,31 @@ void ImportExportCsv::read(std::vector<Contact> *contact, std::string &filepath)
             std::cout<<strelement<<std::endl;
             *elements[cnt++] = strelement;
          }
-       
+
          if ( emptyline == false )
          {
-            m_contactdir->push_back(Contact(Person(m_firstname, m_surname), 
-                                       Address(m_street, m_postcode, m_country), 
+            m_contactdir->push_back(Contact(Person(m_firstname, m_surname),
+                                       Address(m_street, m_postcode, m_country),
                                              PhoneBook(m_phone_private, m_phone_work, m_phone_mobile)));
          }
       }
+   }
+}
+
+bool check_filetype_csv(std::string filepath)
+{
+    std::ifstream csvfile (filepath);
+    std::string line;
+    if (csvfile.is_open())
+    {
+       getline(csvfile, line); //Get line (first one)
+       if (line != "csv")
+       {
+          return false;
+       }
+       else
+       {
+           return true;
+       }
    }
 }
