@@ -322,7 +322,7 @@ void PrintOutDirectory(vector<Contact> cont_dir , char extension)
 
          cout<<"Tel.Buch = "<<cont_dir.at(i).get_phonebook().get_num_privat() + "   "
                                  + cont_dir.at(i).get_phonebook().get_num_work() + "   " 
-                                            cont_dir.at(i).get_phonebook().get_num_mobile()  + <<endl;
+                                           + cont_dir.at(i).get_phonebook().get_num_mobile()<<endl;
       }
    }
    if (extension == 'y')
